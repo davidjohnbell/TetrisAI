@@ -1,17 +1,21 @@
 package game;
 
+import utils.Matrix;
+
 public class Board {
-    private int[][] board;
+    private Matrix board;
+    private int score;
 
     public Board(int rows, int columns) {
-        board = new int[rows][columns];
+        this.board = new Matrix(columns, rows);
     }
 
-    public int[][] getBoard() {
-        return board.clone();
+    public Matrix applyShape(Shape shape) {
+        Matrix shapeData = shape.getCurrent();
+        shapeData.resize(board.getWidth(), board.getHeight());
+        for(int i = 0; i < shape.y; i++) {
+            //shift rows
+        }
     }
 
-    public int[][] applyShape(Shape shape) {
-        return null;
-    }
 }

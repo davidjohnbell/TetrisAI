@@ -1,37 +1,37 @@
 package game;
 
+import utils.Matrix;
+
 public class Shape {
-    private int[][] shape;
+    private Matrix[] rotations;
+    private int rotationIndex;
     public int x;
     public int y;
 
-    public Shape(int[][] shapeArray) {
-        shape = shapeArray;
+    public Shape(int[][] shapeData) {
+        this.rotations = new Matrix[] {
+            new Matrix(shapeData),
+            new Matrix(shapeData),
+            new Matrix(shapeData),
+            new Matrix(shapeData)
+        };
+        for(int i = 0; i < 4; i++) {
+            this.rotations[i].rotateRight(i);
+        }
+        rotationIndex = 0;
         x = 0;
         y = 0;
     }
 
-    public void rotate() {
-        int[][] rotation = new int[shape[0].length][shape.length];
-
-        //transpose
-        for(int row = 0; row < shape.length; row++) {
-            for(int col = 0; col < shape[0].length; col++) {
-                rotation[col][row] = shape[row][col];
-            }
+    public void rotate(int n) {
+        n = Math.abs(n);
+        rotationIndex += n;
+        if(rotationIndex >= rotations.length) {
+            rotationIndex %= 4;
         }
+    }
 
-        //reverse each row
-        for (int[] array : rotation) {
-            int start = 0, end = array.length - 1;
-             while (start <= end) {
-                int temp = array[start];
-                array[start] = array[end];
-                array[end] = temp;
-                start++;
-                end--;
-            }
-        }
-        shape = rotation;
+    public Matrix getCurrent() {
+        return rotations[rotationIndex];
     }
 }
