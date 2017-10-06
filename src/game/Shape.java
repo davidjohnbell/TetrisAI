@@ -9,13 +9,14 @@ public class Shape {
     public int y;
 
     public Shape(int[][] shapeData) {
+        Matrix original = new Matrix(shapeData);
         this.rotations = new Matrix[] {
-            new Matrix(shapeData),
-            new Matrix(shapeData),
-            new Matrix(shapeData),
-            new Matrix(shapeData)
-        };
+            original,
+            Matrix.copy(original),
+            Matrix.copy(original),
+            Matrix.copy(original)};
         for(int i = 0; i < 4; i++) {
+
             this.rotations[i].rotateRight(i);
         }
         rotationIndex = 0;
@@ -33,5 +34,18 @@ public class Shape {
 
     public Matrix getCurrent() {
         return rotations[rotationIndex];
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Shape))
+            return false;
+        if (obj == this)
+            return true;
+        Shape shape = (Shape) obj;
+        if(shape.getCurrent().equals(shape.getCurrent()))
+            return true;
+        else
+            return false;
     }
 }

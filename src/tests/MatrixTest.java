@@ -1,18 +1,19 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import utils.Matrix;
 
 class MatrixTest {
-    @org.junit.jupiter.api.Test
+    Matrix m1 = new Matrix(
+        new int[][] {
+            {1,2,3},
+            {4,5,6},
+            {7,8,9}});
+
+    @Test
     void inverse() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {1,4,7},
@@ -22,13 +23,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void reverseRows() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {3,2,1},
@@ -38,13 +34,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void reverseColumns() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {7,8,9},
@@ -54,13 +45,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void rotateRight() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {7,4,1},
@@ -70,13 +56,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void rotateLeft() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {3,6,9},
@@ -86,13 +67,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void add() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {0,0,0},
@@ -102,70 +78,45 @@ class MatrixTest {
         Assertions.assertTrue(m3.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void resize() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {1,2,3,0},
                 {4,5,6,0},
                 {7,8,9,0},
                 {0,0,0,0}});
-        m1.resize(4,4);
-        Assertions.assertTrue(m2.equals(m1));
+        Matrix m3 = m1.resize(4,4);
+        Assertions.assertTrue(m2.equals(m3));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void sumRow() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Assertions.assertEquals(m1.sumRow(0), 6);
         Assertions.assertEquals(m1.sumRow(1), 15);
         Assertions.assertEquals(m1.sumRow(2), 24);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void sumCol() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Assertions.assertEquals(m1.sumCol(0), 12);
         Assertions.assertEquals(m1.sumCol(1), 15);
         Assertions.assertEquals(m1.sumCol(2), 18);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void leftShift() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
-                {2,2,0},
-                {5,5,0},
-                {8,8,0}});
+                {2,3,0},
+                {5,6,0},
+                {8,9,0}});
         m1.leftShift();
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void rightShift() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {0,1,2},
@@ -175,13 +126,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void upShift() {
-        Matrix m1 = new Matrix(
-                new int[][] {
-                        {1,2,3},
-                        {4,5,6},
-                        {7,8,9}});
         Matrix m2 = new Matrix(
                 new int[][] {
                         {4,5,6},
@@ -191,13 +137,8 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void downShift() {
-        Matrix m1 = new Matrix(
-            new int[][] {
-                {1,2,3},
-                {4,5,6},
-                {7,8,9}});
         Matrix m2 = new Matrix(
             new int[][] {
                 {0,0,0},
@@ -207,17 +148,10 @@ class MatrixTest {
         Assertions.assertTrue(m2.equals(m1));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getSetElement() {
-        Matrix m1 = new Matrix(
-                new int[][] {
-                        {0,0,0},
-                        {4,5,6},
-                        {0,0,0}});
-        m1.setElement(2,2, 2);
-        Assertions.assertEquals(m1.getElement(0,0), 0);
-        Assertions.assertEquals(m1.getElement(1,1), 5);
-        Assertions.assertEquals(m1.getElement(2,2), 2);
+        m1.setElement(2,2, 22);
+        Assertions.assertEquals(m1.getElement(2,2), 22);
     }
 
 

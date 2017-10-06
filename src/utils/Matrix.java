@@ -1,6 +1,6 @@
 package utils;
 
-import com.sun.corba.se.spi.ior.ObjectKey;
+import java.util.Arrays;
 
 public class Matrix {
     private int[][] data;
@@ -32,7 +32,7 @@ public class Matrix {
     }
 
     private void reverse(int[] array) {
-        int start = 0, stop = array.length;
+        int start = 0, stop = array.length - 1;
         while(start < stop) {
             int temp = array[start];
             array[start] = array[stop];
@@ -44,7 +44,7 @@ public class Matrix {
     public void reverseColumns() {
         int width = getWidth(), height = getHeight();
         for(int i = 0; i < width; i++) {
-            int start = 0, stop = height;
+            int start = 0, stop = height - 1;
             while(start < stop) {
                 int temp = data[start][i];
                 data[start][i] = data[stop][i];
@@ -107,21 +107,10 @@ public class Matrix {
         for(int[] array : this.data) {
             sum += array[col];
         }
-        return col;
+        return sum;
     }
 
     public void leftShift() {
-        int rows = getHeight();
-        int cols = getWidth();
-        for(int i = 0; i < rows; i++) {
-            for(int j = cols - 1; j > 0; j--) {
-                this.data[i][j] = this.data[i][j-1];
-            }
-            this.data[i][0] = 0;
-        }
-    }
-
-    public void rightShift() {
         int rows = getHeight();
         int cols = getWidth();
         for(int i = 0; i < rows; i++) {
@@ -132,26 +121,33 @@ public class Matrix {
         }
     }
 
+    public void rightShift() {
+        int rows = getHeight();
+        int cols = getWidth();
+        for(int i = 0; i < rows; i++) {
+            for(int j = cols - 1; j > 0; j--) {
+                this.data[i][j] = this.data[i][j-1];
+            }
+            this.data[i][0] = 0;
+        }
+    }
+
     public void upShift() {
         int rows = getHeight();
         int cols = getWidth();
         for(int i = 0; i < rows - 1; i++) {
-            this.data[i] = this.data[i+1];
+            this.data[i] = Arrays.copyOf(data[i+1], cols);
         }
-        for(int i = 0; i < cols; i++) {
-            this.data[rows-1][i] = 0;
-        }
+        Arrays.fill(this.data[rows-1], 0);
     }
 
     public void downShift() {
         int rows = getHeight();
         int cols = getWidth();
-        for(int i = 0; i < rows - 1; i++) {
-            this.data[i + 1] = this.data[i];
+        for(int i = rows - 1; i > 0; i--) {
+            this.data[i] = Arrays.copyOf(this.data[i-1], cols);
         }
-        for(int i = 0; i < cols; i++) {
-            this.data[0][i] = 0;
-        }
+        Arrays.fill(this.data[0], 0);
     }
 
     public void shift(int x, int y) {
@@ -174,6 +170,18 @@ public class Matrix {
                 downShift();
             }
         }
+    }
+    public static Matrix copy(Matrix matrix) {
+        int height = matrix.getHeight();
+        int width = matrix.getWidth();
+        Matrix copy = new Matrix(width, height);
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                copy.setElement(i, j,
+                        matrix.getElement(i, j));
+            }
+        }
+        return copy;
     }
 
     @Override
