@@ -1,5 +1,7 @@
 package utils;
 
+import com.sun.corba.se.spi.ior.ObjectKey;
+
 public class Matrix {
     private int[][] data;
 
@@ -25,17 +27,20 @@ public class Matrix {
 
     public void reverseRows() {
         for(int[] array : data) {
-            int start = 0, stop = array.length;
-            while(start < stop) {
-                int temp = array[start];
-                array[start] = array[stop];
-                array[stop] = temp;
-                start++;
-                stop--;
-            }
+            reverse(array);
         }
     }
 
+    private void reverse(int[] array) {
+        int start = 0, stop = array.length;
+        while(start < stop) {
+            int temp = array[start];
+            array[start] = array[stop];
+            array[stop] = temp;
+            start++;
+            stop--;
+        }
+    }
     public void reverseColumns() {
         int width = getWidth(), height = getHeight();
         for(int i = 0; i < width; i++) {
@@ -88,6 +93,109 @@ public class Matrix {
         }
         return new Matrix(data);
     }
+
+    public int sumRow(int row) {
+        int sum = 0;
+        for(int value : this.data[row]) {
+            sum += value;
+        }
+        return sum;
+    }
+
+    public int sumCol(int col) {
+        int sum = 0;
+        for(int[] array : this.data) {
+            sum += array[col];
+        }
+        return col;
+    }
+
+    public void leftShift() {
+        int rows = getHeight();
+        int cols = getWidth();
+        for(int i = 0; i < rows; i++) {
+            for(int j = cols - 1; j > 0; j--) {
+                this.data[i][j] = this.data[i][j-1];
+            }
+            this.data[i][0] = 0;
+        }
+    }
+
+    public void rightShift() {
+        int rows = getHeight();
+        int cols = getWidth();
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols - 1; j++) {
+                this.data[i][j] = this.data[i][j+1];
+            }
+            this.data[i][cols-1] = 0;
+        }
+    }
+
+    public void upShift() {
+        int rows = getHeight();
+        int cols = getWidth();
+        for(int i = 0; i < rows - 1; i++) {
+            this.data[i] = this.data[i+1];
+        }
+        for(int i = 0; i < cols; i++) {
+            this.data[rows-1][i] = 0;
+        }
+    }
+
+    public void downShift() {
+        int rows = getHeight();
+        int cols = getWidth();
+        for(int i = 0; i < rows - 1; i++) {
+            this.data[i + 1] = this.data[i];
+        }
+        for(int i = 0; i < cols; i++) {
+            this.data[0][i] = 0;
+        }
+    }
+
+    public void shift(int x, int y) {
+        boolean left = (x < 0);
+        boolean up = (y < 0);
+        x = Math.abs(x);
+        for(int i = 0; i < x; i ++) {
+            if(left) {
+                leftShift();
+            }
+            else {
+                rightShift();
+            }
+        }
+        for(int i = 0; i < y; i++) {
+            if(up) {
+                upShift();
+            }
+            else {
+                downShift();
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Matrix))
+            return false;
+        if (obj == this)
+            return true;
+
+        Matrix matrix = (Matrix) obj;
+        int[][] matrixData = matrix.getData();
+        if(getWidth() != matrix.getWidth() || getHeight() != matrix.getHeight())
+            return false;
+        for(int i = 0; i < getHeight(); i++) {
+            for (int j = 0; j < getWidth(); j++) {
+                if(this.data[i][j] != matrixData[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+
 
     public int getWidth() { return this.data[0].length;}
     public int getHeight() { return this.data.length;}
