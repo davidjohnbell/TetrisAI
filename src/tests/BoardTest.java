@@ -46,20 +46,35 @@ class BoardTest {
 
     @Test
     void collision() {
-        //Unimplemented
-        Assertions.assertTrue(false);
+        board.board.setElement(1,0, 5);
+        Matrix applied = Board.applyShape(shape, board.board);
+        boolean oops = Board.collision(applied, board.board);
+        Assertions.assertTrue(oops);
     }
 
     @Test
     void rowsCleared() {
-        //Unimplemented
-        Assertions.assertTrue(false);
+        for(int i = 0; i < board.board.getHeight(); i += 2) {
+            for(int j = 0; j < board.board.getWidth(); j++) {
+                board.board.setElement(i, j, 1);
+            }
+        }
+        for(int i = 0; i < board.board.getHeight(); i ++) {
+            board.board.setElement(i, 0, 1);
+        }
+        int[] cleared = Board.rowsCleared(board.board);
+        Assertions.assertArrayEquals(cleared,
+                new int[] {1,0,1,0,1,0,1,0});
+        Assertions.assertEquals(4, board.board.sumCol(0));
+        Assertions.assertEquals(0, board.board.sumCol(1));
     }
 
     @Test
     void win() {
+        board.board.setElement(0, 0, 1);
+        boolean win = Board.win(board.board);
         //Unimplemented
-        Assertions.assertTrue(false);
+        Assertions.assertTrue(win);
     }
 
 }

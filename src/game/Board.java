@@ -34,15 +34,15 @@ public class Board {
         return shapeData;
     }
 
-    public static boolean collision(Matrix shape, Matrix board) {
-        int rows = shape.getHeight();
-        int cols = shape.getWidth();
-        if(shape.sumRow(rows-1) > 0) {
+    public static boolean collision(Matrix appliedShape, Matrix board) {
+        int rows = appliedShape.getHeight();
+        int cols = appliedShape.getWidth();
+        if(appliedShape.sumRow(rows-1) > 0) {
             return true;
         }
         for(int i = 0; i < rows - 1; i++) {
             for(int j = 0; j < cols; j++) {
-                if(shape.getElement(i, j) > 0
+                if(appliedShape.getElement(i, j) > 0
                 && board.getElement(i+1, j) > 0) {
                     return true;
                 }
@@ -76,22 +76,19 @@ public class Board {
     private static void collapseCleared(int[] clearedIndexes, Matrix board) {
         int rows = board.getHeight();
         int cols = board.getWidth();
-        for(int i = 0; i < rows; i++) {
-            if(clearedIndexes[i] > 0) {
-                for(int j = 0; j < i; j++ ) {
-                    board.getData()[j+1] = Arrays.copyOf(board.getData()[j], cols);
-                }
-                for(int j = 0; j < cols; j++) {
-                    board.setElement(0, j, 0);
-                }
+        int[][] newData = new int[rows][cols];
+        int last = rows - 1;
+        for(int i = rows - 1; i > 0; i--) {
+            if(clearedIndexes[i] == 0) {
+                newData[last] =  Arrays.copyOf(board.getData()[i], cols);
+                last--;
             }
         }
+        board.setData(newData);
     }
 
     public static boolean win(Matrix board) {
         return (board.sumRow(0) > 0);
     }
-
-
 
 }
