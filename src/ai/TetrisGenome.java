@@ -1,8 +1,6 @@
 package ai;
 
 import game.Board;
-import utils.Matrix;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,22 +88,20 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     }
 
     private int maxHeightChromosome(Board board) {
-        Matrix matrix = board.board;
-        for(int i = 0; i < matrix.getHeight(); i++) {
-            if(matrix.sumRow(i) > 0) {
-                return matrix.getHeight() - i;
+        for(int i = 0; i < board.getHeight(); i++) {
+            if(board.sumRow(i) > 0) {
+                return board.getHeight() - i;
             }
         }
         return 0;
     }
 
     private int relativeHeightChromosome(Board board) {
-        Matrix matrix = board.board;
-        int[] net = new int[matrix.getWidth()];
-        Arrays.fill(net, matrix.getHeight());
-        for(int i = 0; i < matrix.getWidth(); i++) {
-            for(int j = 0; j < matrix.getHeight(); j++) {
-                int elem = matrix.getElement(j, i);
+        int[] net = new int[board.getWidth()];
+        Arrays.fill(net, board.getHeight());
+        for(int i = 0; i < board.getWidth(); i++) {
+            for(int j = 0; j < board.getHeight(); j++) {
+                int elem = board.getElement(j, i);
                 if(elem > 0) {
                     break;
                 }
@@ -126,11 +122,10 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
 
     private int holesChromosome(Board board) {
         int holes = 0;
-        Matrix matrix = board.board;
-        for(int i = 0; i < matrix.getWidth(); i++) {
+        for(int i = 0; i < board.getWidth(); i++) {
             boolean start = false;
-            for(int j = 0; j < matrix.getHeight(); i++) {
-                int elem = matrix.getElement(j, i);
+            for(int j = 0; j < board.getHeight(); i++) {
+                int elem = board.getElement(j, i);
                 if(elem > 0) {
                     start = true;
                 }
@@ -143,11 +138,10 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     }
 
     private int filledChromosome(Board board) {
-        Matrix matrix = board.board;
-        int empty = matrix.getWidth() * matrix.getHeight();
-        for(int i = 0; i < matrix.getHeight(); i++) {
-            for(int j = 0; j < matrix.getWidth(); j++) {
-                if(matrix.getElement(i, j) > 0) {
+        int empty = board.getWidth() * board.getHeight();
+        for(int i = 0; i < board.getHeight(); i++) {
+            for(int j = 0; j < board.getWidth(); j++) {
+                if(board.getElement(i, j) > 0) {
                     empty--;
                 }
             }
@@ -156,7 +150,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     }
 
     private int rowsClearedChromosome(Board board) {
-        int[] cleared = Board.getFullRows(board.board);
+        int[] cleared = board.getFullRows();
         int total = 0;
         for(int elem : cleared) {
             if(elem > 0) {
