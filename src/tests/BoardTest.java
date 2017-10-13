@@ -72,7 +72,7 @@ class BoardTest {
     @Test
     void win() {
         board.board.setElement(0, 0, 1);
-        boolean win = Board.win(board.board);
+        boolean win = Board.isGameOver(board.board);
         //Unimplemented
         Assertions.assertTrue(win);
     }

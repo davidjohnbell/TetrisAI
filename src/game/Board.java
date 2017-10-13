@@ -73,8 +73,8 @@ public class Board extends Matrix {
         return new Board(new Matrix(newData), id);
     }
 
-    public static boolean win(Matrix board) {
-        return (board.sumRow(0) > 0);
+    public boolean isGameOver() {
+        return ( sumRow(0) > 0);
     }
 
 }
