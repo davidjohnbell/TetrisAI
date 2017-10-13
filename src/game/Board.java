@@ -16,20 +16,20 @@ public class Board extends Matrix {
         this.id = id;
     }
 
-    public static Matrix applyShape(Shape shape, Matrix board) {
-        Matrix shapeData = shape.getCurrent();
-        shapeData = shapeData.resize(board.getWidth(), board.getHeight());
+    public Matrix applyShape(Shape shape) {
+        Matrix shapeMatrix = shape.getCurrent();
+        shapeMatrix.resize(getWidth(), getHeight());
         for(int i = 0; i < shape.y; i++) {
-            if(shapeData.sumRow(shapeData.getHeight() - 1) == 0) {
-                shapeData.downShift();
+            if(shapeMatrix.sumRow(shapeMatrix.getHeight() - 1) == 0) {
+                shapeMatrix.downShift();
             }
         }
         for(int i = 0; i < shape.x; i++) {
-            if(shapeData.sumCol(shapeData.getWidth() - 1) == 0) {
-                shapeData.rightShift();
+            if(shapeMatrix.sumCol(shapeMatrix.getWidth() - 1) == 0) {
+                shapeMatrix.rightShift();
             }
         }
-        return shapeData;
+        return shapeMatrix;
     }
 
     public static boolean collision(Matrix appliedShape, Matrix board) {
