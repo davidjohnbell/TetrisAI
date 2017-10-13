@@ -62,7 +62,7 @@ class BoardTest {
         for(int i = 0; i < board.board.getHeight(); i ++) {
             board.board.setElement(i, 0, 1);
         }
-        int[] cleared = Board.rowsCleared(board.board);
+        int[] cleared = Board.getFullRows(board.board);
         Assertions.assertArrayEquals(cleared,
                 new int[] {1,0,1,0,1,0,1,0});
         Assertions.assertEquals(4, board.board.sumCol(0));

@@ -49,25 +49,13 @@ public class Board extends Matrix {
         return false;
     }
 
-    public static int[] rowsCleared(Matrix board) {
-        int rows = board.getHeight();
-        int cols = board.getWidth();
-        boolean cleared;
-        int[] clearedIndexes = new int[rows];
-        for(int i = 0; i < rows; i++) {
-            cleared = true;
-            for(int j = 0; j < cols; j++) {
-                if(board.getElement(i, j) == 0) {
-                    cleared = false;
-                    clearedIndexes[i] = 0;
-                    break;
-                }
-            }
-            if(cleared) {
+    public int[] getFullRows() {
+        int[] clearedIndexes = new int[getHeight()];
+        for(int i = 0; i < getHeight(); i++) {
+            if(sumRow(i) == 0) {
                 clearedIndexes[i] = 1;
             }
         }
-        collapseCleared(clearedIndexes, board);
         return clearedIndexes;
     }
 

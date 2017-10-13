@@ -156,7 +156,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     }
 
     private int rowsClearedChromosome(Board board) {
-        int[] cleared = Board.rowsCleared(board.board);
+        int[] cleared = Board.getFullRows(board.board);
         int total = 0;
         for(int elem : cleared) {
             if(elem > 0) {
