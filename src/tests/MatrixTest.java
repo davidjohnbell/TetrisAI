@@ -86,8 +86,8 @@ class MatrixTest {
                 {4,5,6,0},
                 {7,8,9,0},
                 {0,0,0,0}});
-        Matrix m3 = m1.resize(4,4);
-        Assertions.assertTrue(m2.equals(m3));
+        m1.resize(4,4);
+        Assertions.assertTrue(m2.equals(m1));
     }
 
     @Test

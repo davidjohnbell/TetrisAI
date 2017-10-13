@@ -16,7 +16,13 @@ public class Matrix {
 
     public void transpose() {
         int height = getHeight(), width = getWidth();
-        int[][] inverse = new int[width][height];
+        int[][] inverse;
+        if(height != width) {
+            inverse = new int[width][height];
+        }
+        else {
+            inverse = this.ata;
+        }
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 inverse[j][i] = data[i][j];
@@ -82,7 +88,7 @@ public class Matrix {
         return C;
     }
 
-    public Matrix resize(int width, int height) {
+    public void resize(int width, int height) {
         int[][] data = new int[height][width];
         int rows = Math.min(height, getHeight());
         int columns = Math.min(width, getWidth());
@@ -91,7 +97,7 @@ public class Matrix {
                 data[i][j] = this.data[i][j];
             }
         }
-        return new Matrix(data);
+        this.data = data;
     }
 
     public int sumRow(int row) {
@@ -171,6 +177,7 @@ public class Matrix {
             }
         }
     }
+
     public static Matrix copy(Matrix matrix) {
         int height = matrix.getHeight();
         int width = matrix.getWidth();

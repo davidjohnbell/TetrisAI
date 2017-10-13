@@ -75,7 +75,7 @@ class BoardTest {
         }
         int[] cleared = board.getFullRows();
         Board collapsed = board.collapseRows(cleared);
-        int sum = collapsed.sumRow(0);
+        int sum = collapsed.sumCol(0);
         Assertions.assertEquals(4,sum);
     }
 
