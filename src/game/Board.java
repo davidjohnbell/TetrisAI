@@ -3,19 +3,17 @@ package game;
 import utils.Matrix;
 import java.util.Arrays;
 
-public class Board {
-    public Matrix board;
-    public int score;
+public class Board extends Matrix {
     public final int id;
 
     public Board(int rows, int columns, int id) {
+        super(columns, rows);
         this.id = id;
-        this.board = new Matrix(columns, rows);
     }
 
     public Board(Matrix board, int id) {
+        super(board.getData());
         this.id = id;
-        this.board = board;
     }
 
     public static Matrix applyShape(Shape shape, Matrix board) {

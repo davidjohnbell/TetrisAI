@@ -28,7 +28,7 @@ public class Shape {
         n = Math.abs(n);
         rotationIndex += n;
         if(rotationIndex >= rotations.length) {
-            rotationIndex %= 4;
+            rotationIndex %= rotations.length;
         }
     }
 
