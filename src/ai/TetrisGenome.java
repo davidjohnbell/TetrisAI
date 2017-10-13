@@ -4,6 +4,7 @@ import game.Board;
 import utils.Matrix;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -28,15 +29,9 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     }
 
     private void initWeights() {
-        Method[] methods = this.getClass().getDeclaredMethods();
-        int size = 0;
-        for(Method method : methods) {
-            if(method.getName().toLowerCase().contains("chromosome")) {
-                size++;
-            }
-        }
-        weights = new float[size];
-        for(int i = 0; i < size; i++) {
+        ArrayList<Method> chromosomes = getChromosomes();
+        weights = new float[chromosomes.size()];
+        for(int i = 0; i < weights.length; i++) {
             this.weights[i] = rand.nextFloat();
         }
     }
@@ -67,20 +62,29 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return child;
     }
 
+    private ArrayList<Method> getChromosomes() {
+        Method[] methods = this.getClass().getDeclaredMethods();
+        ArrayList<Method> chromosomes = new ArrayList<>();
+        for(Method method : methods) {
+            if(method.getName().toLowerCase().contains("chromosome")) {
+                chromosomes.add(method);
+            }
+        }
+        return chromosomes;
+    }
 
     public int evaluateBoard(Board board) {
-        Method[] methods = this.getClass().getDeclaredMethods();
+        ArrayList<Method> chromosomes = getChromosomes();
+        int i = 0;
         int sum = 0;
-        for(int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            method.setAccessible(true);
-            if(method.getName().toLowerCase().contains("chromosome")) {
-                try {
-                    int methodScore = (int)method.invoke(this, board);
-                    sum += Math.round((this.weights[i] * methodScore));
-                }
-                catch(Exception e){}
+        for(Method chromosome : chromosomes) {
+            chromosome.setAccessible(true);
+            try {
+                int methodScore = (int)chromosome.invoke(this, board);
+                sum += Math.round((this.weights[i] * methodScore));
             }
+            catch(Exception e){}
+            i++;
         }
         return sum;
     }
