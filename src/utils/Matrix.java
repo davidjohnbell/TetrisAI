@@ -21,7 +21,7 @@ public class Matrix {
             inverse = new int[width][height];
         }
         else {
-            inverse = this.ata;
+            inverse = this.data;
         }
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
