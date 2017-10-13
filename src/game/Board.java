@@ -11,8 +11,8 @@ public class Board extends Matrix {
         this.id = id;
     }
 
-    public Board(Matrix board, int id) {
-        super(board.getData());
+    public Board(Matrix boardMatrix, int id) {
+        super(boardMatrix.getData());
         this.id = id;
     }
 
@@ -59,18 +59,18 @@ public class Board extends Matrix {
         return clearedIndexes;
     }
 
-    private static void collapseCleared(int[] clearedIndexes, Matrix board) {
-        int rows = board.getHeight();
-        int cols = board.getWidth();
+    public Board collapseRows(int[] clearedIndexes) {
+        int rows = getHeight();
+        int cols = getWidth();
         int[][] newData = new int[rows][cols];
         int last = rows - 1;
         for(int i = rows - 1; i > 0; i--) {
             if(clearedIndexes[i] == 0) {
-                newData[last] =  Arrays.copyOf(board.getData()[i], cols);
+                newData[last] =  Arrays.copyOf(getData()[i], cols);
                 last--;
             }
         }
-        board.setData(newData);
+        return new Board(new Matrix(newData), id);
     }
 
     public static boolean win(Matrix board) {
