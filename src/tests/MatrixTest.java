@@ -13,13 +13,13 @@ class MatrixTest {
             {7,8,9}});
 
     @Test
-    void inverse() {
+    void transpose() {
         Matrix m2 = new Matrix(
             new int[][] {
                 {1,4,7},
                 {2,5,8},
                 {3,6,9}});
-        m1.inverse();
+        m1.transpose();
         Assertions.assertTrue(m2.equals(m1));
     }
 

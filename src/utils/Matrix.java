@@ -14,7 +14,7 @@ public class Matrix {
         this.data = data;
     }
 
-    public void inverse() {
+    public void transpose() {
         int height = getHeight(), width = getWidth();
         int[][] inverse = new int[width][height];
         for(int i = 0; i < height; i++) {
@@ -57,14 +57,14 @@ public class Matrix {
 
     public void rotateRight(int n) {
         for(int i = 0; i < n; i++) {
-            inverse();
+            transpose();
             reverseRows();
         }
     }
 
     public void rotateLeft(int n) {
         for(int i = 0; i < n; i++) {
-            inverse();
+            transpose();
             reverseColumns();
         }
     }
