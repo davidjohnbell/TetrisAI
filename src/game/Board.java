@@ -32,7 +32,7 @@ public class Board extends Matrix {
         return shapeMatrix;
     }
 
-    public static boolean collision(Matrix appliedShape, Matrix board) {
+    public boolean collision(Matrix appliedShape) {
         int rows = appliedShape.getHeight();
         int cols = appliedShape.getWidth();
         if(appliedShape.sumRow(rows-1) > 0) {
@@ -41,7 +41,7 @@ public class Board extends Matrix {
         for(int i = 0; i < rows - 1; i++) {
             for(int j = 0; j < cols; j++) {
                 if(appliedShape.getElement(i, j) > 0
-                && board.getElement(i+1, j) > 0) {
+                && getElement(i+1, j) > 0) {
                     return true;
                 }
             }
