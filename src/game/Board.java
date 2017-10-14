@@ -49,6 +49,14 @@ public class Board extends Matrix {
         return false;
     }
 
+    public Board dropShape(Shape shape) {
+        Matrix applied = applyShape(shape);
+        while(collision(applied) == false) {
+            applied.downShift();
+        }
+        return new Board(Matrix.add(this, applied),id+1);
+    }
+
     public int[] getFullRows() {
         int[] clearedIndexes = new int[getHeight()];
         for(int i = 0; i < getHeight(); i++) {

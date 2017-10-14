@@ -1,6 +1,7 @@
 package ai;
 
 import game.Board;
+import game.Shape;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,5 +159,32 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
             }
         }
         return total;
+    }
+
+    public Board makeMove(Board board, Shape shape) {
+        ArrayList<Board> boards = makeBoards(board, shape);
+        int maxScore = Integer.MIN_VALUE;
+        Board maxBoard = boards.get(0);
+        for(int i = 1; i < boards.size(); i++) {
+            Board current = boards.get(i);
+            int score = evaluateBoard(current);
+            if(score > maxScore) {
+                maxBoard = current;
+            }
+        }
+        return maxBoard;
+    }
+
+    private ArrayList<Board> makeBoards(Board board, Shape shape) {
+        ArrayList<Board> boards = new ArrayList<>();
+        for(int r = 0; r < 4; r++) {
+            for(int i = 0; i < board.getWidth(); i++) {
+                shape.x = i;
+                shape.y = 0;
+                boards.add(board.dropShape(shape));
+            }
+            shape.rotate(1);
+        }
+        return boards;
     }
 }
