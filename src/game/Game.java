@@ -68,7 +68,9 @@ public class Game {
         shapes.put('S', S);
     }
 
+    private void step() {
 
+    }
     private void scoreCleared(int[] cleared) {
         for(int i = 0; i < cleared.length; i++) {
             if(cleared[i] > 0) {
@@ -88,9 +90,5 @@ public class Game {
             }
         }
     }
-
-    //1. create all possible boards from current shape
-    //2. feed boards to AI
-    //3. AI pick move
 
 }
