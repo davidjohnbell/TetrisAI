@@ -6,10 +6,10 @@ import java.util.Random;
 
 
 public class Game implements Runnable{
-    public Board board;
+    private Board board;
     private Random rand;
-    public final int width;
-    public final int height;
+    private final int width;
+    private final int height;
     private ArrayList<Shape> shapes;
     private int score;
     private TetrisGenome genome;
@@ -18,13 +18,13 @@ public class Game implements Runnable{
         System.out.println("hello world");
     }
 
-    public Game(TetrisGenome genome, int width, int height){
+    public Game(TetrisGenome genome, int width, int height, long seed){
         this.height  = height;
         this.width = width;
         this.genome = genome;
         shapes = new ArrayList<>();
         board = new Board(height, width, rand.nextInt());
-        rand = new Random();
+        rand = new Random(seed);
         addDefaultShapes();
     }
 
@@ -104,7 +104,7 @@ public class Game implements Runnable{
     @Override
     public void run() {
         score = 0;
-        while(board.isGameOver() == false) {
+        while(!board.isGameOver()) {
             step();
         }
         genome.fitness = score;

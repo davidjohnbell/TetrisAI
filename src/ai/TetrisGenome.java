@@ -21,13 +21,6 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         initWeights();
     }
 
-    public TetrisGenome() {
-        this.mutateRate = 0.1f;
-        this.mutateStep = 0.2f;
-        this.rand = new Random();
-        initWeights();
-    }
-
     private void initWeights() {
         ArrayList<Method> chromosomes = getChromosomes();
         weights = new float[chromosomes.size()];
