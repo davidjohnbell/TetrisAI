@@ -1,26 +1,28 @@
 package game;
 
-import utils.Matrix;
-
-import java.util.HashMap;
-import java.util.Map;
+import ai.TetrisGenome;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Game {
-    public Map<Character, Shape> shapes;
+
+public class Game implements Runnable{
     public Board board;
     private Random rand;
-    public final int width = 10;
-    public final int height = 20;
-    private Shape currentShape;
+    public final int width;
+    public final int height;
+    private ArrayList<Shape> shapes;
     private int score;
+    private TetrisGenome genome;
 
     public static void main(String[] args) {
         System.out.println("hello world");
     }
 
-    public Game(){
-        shapes = new HashMap<>();
+    public Game(TetrisGenome genome, int width, int height){
+        this.height  = height;
+        this.width = width;
+        this.genome = genome;
+        shapes = new ArrayList<>();
         board = new Board(height, width, rand.nextInt());
         rand = new Random();
         addDefaultShapes();
@@ -60,17 +62,25 @@ public class Game {
                 {6,6,0},
                 {0,0,0}
             });
-        shapes.put('I', I);
-        shapes.put('O', O);
-        shapes.put('L', L);
-        shapes.put('J', J);
-        shapes.put('Z', Z);
-        shapes.put('S', S);
+        shapes.add(I);
+        shapes.add(O);
+        shapes.add(L);
+        shapes.add(J);
+        shapes.add(Z);
+        shapes.add(S);
     }
 
     private void step() {
-
+        Shape shape = shapes.get(rand.nextInt(shapes.size()));
+        shape.x = 0;
+        shape.y = 0;
+        Board stepBoard = genome.makeMove(this.board, shape);
+        int[] clearedRows = stepBoard.getFullRows();
+        scoreCleared(clearedRows);
+        stepBoard.collapseRows(clearedRows);
+        this.board = stepBoard;
     }
+
     private void scoreCleared(int[] cleared) {
         for(int i = 0; i < cleared.length; i++) {
             if(cleared[i] > 0) {
@@ -91,4 +101,12 @@ public class Game {
         }
     }
 
+    @Override
+    public void run() {
+        score = 0;
+        while(board.isGameOver() == false) {
+            step();
+        }
+        genome.fitness = score;
+    }
 }

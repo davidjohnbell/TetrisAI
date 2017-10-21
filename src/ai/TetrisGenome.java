@@ -10,8 +10,9 @@ import java.util.Random;
 public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     private float mutateRate;
     private float mutateStep;
-    public float[] weights;
+    private float[] weights;
     private Random rand;
+    public int fitness = 0;
 
     public TetrisGenome(float mutateRate, float mutateStep, long seed) {
         this.mutateRate = mutateRate;
