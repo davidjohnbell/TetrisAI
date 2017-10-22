@@ -14,10 +14,6 @@ public class Game implements Runnable{
     private int score;
     private TetrisGenome genome;
 
-    public static void main(String[] args) {
-        System.out.println("hello world");
-    }
-
     public Game(TetrisGenome genome, int width, int height, long seed){
         this.height  = height;
         this.width = width;
