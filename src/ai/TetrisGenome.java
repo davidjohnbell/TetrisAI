@@ -82,6 +82,8 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return sum;
     }
 
+
+    @SuppressWarnings("unused")
     private int maxHeightChromosome(Board board) {
         for(int i = 0; i < board.getHeight(); i++) {
             if(board.sumRow(i) > 0) {
@@ -91,6 +93,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return 0;
     }
 
+    @SuppressWarnings("unused")
     private int relativeHeightChromosome(Board board) {
         int[] net = new int[board.getWidth()];
         Arrays.fill(net, board.getHeight());
@@ -115,6 +118,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return large - small;
     }
 
+    @SuppressWarnings("unused")
     private int holesChromosome(Board board) {
         int holes = 0;
         for(int i = 0; i < board.getWidth(); i++) {
@@ -132,6 +136,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return holes;
     }
 
+    @SuppressWarnings("unused")
     private int filledChromosome(Board board) {
         int empty = board.getWidth() * board.getHeight();
         for(int i = 0; i < board.getHeight(); i++) {
@@ -144,6 +149,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return empty;
     }
 
+    @SuppressWarnings("unused")
     private int rowsClearedChromosome(Board board) {
         int[] cleared = board.getFullRows();
         int total = 0;
