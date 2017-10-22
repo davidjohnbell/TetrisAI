@@ -29,11 +29,11 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         }
     }
 
-    public void mutate() {
+    public void maybeMutate() {
         for(int i = 0; i < weights.length; i++) {
             if(rand.nextFloat() <= mutateRate) {
                 if(rand.nextBoolean()) {
-                    weights[i] += this.mutateStep;
+                    weights[i] += mutateStep;
                 }
                 else {
                     weights[i] -= mutateStep;
