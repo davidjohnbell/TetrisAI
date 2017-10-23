@@ -3,10 +3,7 @@ package simulator;
 import ai.TetrisGenome;
 import game.Game;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class Simulator {
@@ -15,9 +12,9 @@ public class Simulator {
     private Random rand;
     private ThreadPoolExecutor executor;
     private Game[] population;
-    public TetrisGenome alpha;
+    private TetrisGenome alpha;
 
-    public Simulator(int threads, int size, float crossRate, float mutationRate, float mutationStep, long seed, int width, int height) {
+    private Simulator(int threads, int size, float crossRate, float mutationRate, float mutationStep, long seed, int width, int height) {
         rand = new Random(seed);
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
         population = createPopulation(size, width, height, mutationStep, mutationRate, rand);
@@ -50,7 +47,6 @@ public class Simulator {
             System.out.println("int threads, int size, float mutationRate, float mutationStep, long seed, int width, int height");
             System.exit(-1);
         }
-
         if(sim != null) {
             sim.simulate(5);
             System.out.println(sim.alpha.fitness);
@@ -58,7 +54,7 @@ public class Simulator {
         }
     }
 
-    public void simulate(int nGenerations) {
+    private void simulate(int nGenerations) {
         for(int i = 0; i < nGenerations; i++) {
             stepGeneration();
         }
@@ -76,8 +72,7 @@ public class Simulator {
 
     private void stepGeneration() {
         executeGeneration();
-        Arrays.sort(population, (game1, game2) ->
-            game1.genome.fitness < game2.genome.fitness ? -1 : game1.genome.fitness == game2.genome.fitness ? 0 : 1);
+        Arrays.sort(population, Comparator.comparingInt(game -> game.genome.fitness));
 
         TetrisGenome beta = population[population.length - 1].genome;
         if(alpha == null || alpha.fitness < beta.fitness) { //java is short circuit
@@ -91,11 +86,11 @@ public class Simulator {
         mutateGenes();
     }
 
-    public void executeGeneration() {
+    private void executeGeneration() {
         Collection<Future<?>> futures = new LinkedList<>();
-        for(int i = 0; i < population.length; i++) {
-            population[i].reset();
-            futures.add(executor.submit(population[i]));
+        for(Game game : population) {
+            game.reset();
+            futures.add(executor.submit(game));
         }
         for(Future<?> future : futures) {
             try {
