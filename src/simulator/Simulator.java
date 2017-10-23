@@ -1,34 +1,29 @@
 package simulator;
 
 import ai.TetrisGenome;
-
+import game.Game;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class Simulator {
 
-    private final int threads;
-    private final int size;
     private final float crossRate;
-    private final float mutationRate;
-    private final float mutationStep;
-    private final long seed;
     private final int width;
     private final int height;
     private Random rand;
+    private ThreadPoolExecutor executor;
+    private Game[] population;
 
-    private TetrisGenome[] population;
 
     public Simulator(int threads, int size, float crossRate, float mutationRate, float mutationStep, long seed, int width, int height) {
-        this.threads = threads;
-        this.size = size;
+        rand = new Random(seed);
+        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
+        population = createPopulation(size, mutationStep, mutationRate);
         this.crossRate = crossRate;
-        this.mutationRate = mutationRate;
-        this.mutationStep = mutationStep;
-        this.seed = seed;
         this.width = width;
         this.height = height;
-        this.rand = new Random(seed);
-
     }
 
     public static void main(String[] args) {
@@ -49,13 +44,18 @@ public class Simulator {
             System.out.println("Invalid command line args, try again:");
             System.out.println("int threads, int size, float mutationRate, float mutationStep, long seed, int width, int height");
         }
+        finally {
+
+        }
 
     }
 
-    private TetrisGenome[] createPopulation(int size, float mutationStep, float mutationRate) {
-        TetrisGenome[] population = new TetrisGenome[size];
+    private Game[] createPopulation(int size, int width, int height, float mutationStep, float mutationRate, Random seedGenerator) {
+        long gameSeed = seedGenerator.nextLong();
+        Game[] population = new Game[size];
         for(int i = 0; i < size; i++) {
-            population[i] = new TetrisGenome(mutationRate, mutationStep, rand.nextLong());
+            TetrisGenome genome = new TetrisGenome(mutationRate, mutationStep, seedGenerator.nextLong());
+            population[i] = new Game(genome, width, height, gameSeed);
         }
         return  population;
     }
@@ -64,18 +64,32 @@ public class Simulator {
 
     }
 
-    private void mutateGenes(TetrisGenome[] population) {
-        for(TetrisGenome genome : population) {
-            genome.maybeMutate();
+    private void shutdown() {
+        try {
+            if (executor != null) {
+                executor.shutdown();
+            }
+            while (!executor.isTerminated()) {
+                executor.awaitTermination(60, TimeUnit.SECONDS);
+            }
+        }
+        catch (Exception e) {System.out.println("InterruptedException occurred.");}
+    }
+
+    private void mutateGenes(Game[] population) {
+        for(Game game : population) {
+            game.genome.maybeMutate();
         }
     }
 
-    private void crossGenes(TetrisGenome[] population) {
-        TetrisGenome mom = pickRandom(population);
-        TetrisGenome mom = pickRandom(population);
+    private void crossGenes(Game[] population) {
+        TetrisGenome dad = pickRandom(population).genome;
+        TetrisGenome mom = pickRandom(population).genome;
+        TetrisGenome baby = dad.crossover(mom);5
+
     }
 
-    TetrisGenome pickRandom(TetrisGenome[] population) {
+    public <T> T pickRandom(T[] population) {
         return population[rand.nextInt(population.length)];
     }
 

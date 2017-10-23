@@ -12,7 +12,7 @@ public class Game implements Runnable{
     private final int height;
     private ArrayList<Shape> shapes;
     private int score;
-    private TetrisGenome genome;
+    public TetrisGenome genome;
 
     public Game(TetrisGenome genome, int width, int height, long seed){
         this.height  = height;
@@ -22,6 +22,14 @@ public class Game implements Runnable{
         board = new Board(height, width, rand.nextInt());
         rand = new Random(seed);
         addDefaultShapes();
+    }
+
+    public void reset() {
+        for(Shape shape : shapes) {
+            shape.x = 0;
+            shape.y = 0;
+        }
+        board = new Board(height, width, rand.nextInt());
     }
 
     private void addDefaultShapes(){
