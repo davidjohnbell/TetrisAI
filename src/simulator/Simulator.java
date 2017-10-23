@@ -2,52 +2,66 @@ package simulator;
 
 import ai.TetrisGenome;
 import game.Game;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Simulator {
 
     private final float crossRate;
-    private final int width;
-    private final int height;
     private Random rand;
     private ThreadPoolExecutor executor;
     private Game[] population;
-
+    public TetrisGenome alpha;
 
     public Simulator(int threads, int size, float crossRate, float mutationRate, float mutationStep, long seed, int width, int height) {
         rand = new Random(seed);
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
-        population = createPopulation(size, mutationStep, mutationRate);
+        population = createPopulation(size, width, height, mutationStep, mutationRate, rand);
         this.crossRate = crossRate;
-        this.width = width;
-        this.height = height;
     }
 
     public static void main(String[] args) {
+        int threads;
+        int size;
+        float crossRate;
+        float mutationRate;
+        float mutationStep;
+        long seed;
+        int width;
+        int height;
+        Simulator sim = null;
         try {
-            int threads = Integer.parseInt(args[0]);
-            int size = Integer.parseInt(args[1]);
-            float crossRate = Float.parseFloat(args[2]);
-            float mutationRate = Float.parseFloat(args[3]);
-            float mutationStep = Float.parseFloat(args[4]);
-            long seed = Long.parseLong(args[5]);
-            int width = Integer.parseInt(args[6]);
-            int height = Integer.parseInt(args[7]);
-
-            Simulator sim = new Simulator(threads, size, crossRate, mutationRate, mutationStep, seed, width, height);
-            sim.begin();
+            threads = Integer.parseInt(args[0]);
+            size = Integer.parseInt(args[1]);
+            crossRate = Float.parseFloat(args[2]);
+            mutationRate = Float.parseFloat(args[3]);
+            mutationStep = Float.parseFloat(args[4]);
+            seed = Long.parseLong(args[5]);
+            width = Integer.parseInt(args[6]);
+            height = Integer.parseInt(args[7]);
+            sim = new Simulator(threads, size, crossRate, mutationRate, mutationStep, seed, width, height);
         }
         catch(Exception e) {
             System.out.println("Invalid command line args, try again:");
             System.out.println("int threads, int size, float mutationRate, float mutationStep, long seed, int width, int height");
-        }
-        finally {
-
+            System.exit(-1);
         }
 
+        if(sim != null) {
+            sim.simulate(5);
+            System.out.println(sim.alpha.fitness);
+            sim.shutdown();
+        }
+    }
+
+    public void simulate(int nGenerations) {
+        for(int i = 0; i < nGenerations; i++) {
+            stepGeneration();
+        }
     }
 
     private Game[] createPopulation(int size, int width, int height, float mutationStep, float mutationRate, Random seedGenerator) {
@@ -60,8 +74,38 @@ public class Simulator {
         return  population;
     }
 
-    private void begin() {
+    private void stepGeneration() {
+        executeGeneration();
+        Arrays.sort(population, (game1, game2) ->
+            game1.genome.fitness < game2.genome.fitness ? -1 : game1.genome.fitness == game2.genome.fitness ? 0 : 1);
 
+        TetrisGenome beta = population[population.length - 1].genome;
+        if(alpha == null || alpha.fitness < beta.fitness) { //java is short circuit
+            alpha = beta;
+        }
+
+        if(rand.nextFloat() < crossRate) {
+            crossGenes();
+        }
+
+        mutateGenes();
+    }
+
+    public void executeGeneration() {
+        Collection<Future<?>> futures = new LinkedList<>();
+        for(int i = 0; i < population.length; i++) {
+            population[i].reset();
+            futures.add(executor.submit(population[i]));
+        }
+        for(Future<?> future : futures) {
+            try {
+                future.get();
+            }
+            catch (Exception e) {
+                System.out.println("InterruptException occurred");
+            }
+        }
+        futures.clear();
     }
 
     private void shutdown() {
@@ -70,29 +114,30 @@ public class Simulator {
                 executor.shutdown();
             }
             while (!executor.isTerminated()) {
+                System.out.println("Shutting down...");
                 executor.awaitTermination(60, TimeUnit.SECONDS);
             }
         }
         catch (Exception e) {System.out.println("InterruptedException occurred.");}
     }
 
-    private void mutateGenes(Game[] population) {
+    private void mutateGenes() {
         for(Game game : population) {
-            game.genome.maybeMutate();
+            if(game.genome != alpha) {
+                game.genome.maybeMutate();
+            }
+
         }
     }
 
-    private void crossGenes(Game[] population) {
+    private void crossGenes() {
         TetrisGenome dad = pickRandom(population).genome;
         TetrisGenome mom = pickRandom(population).genome;
-        TetrisGenome baby = dad.crossover(mom);5
-
+        population[0].genome = dad.crossover(mom);
     }
 
-    public <T> T pickRandom(T[] population) {
-        return population[rand.nextInt(population.length)];
+    private <T> T pickRandom(T[] array) {
+        return array[rand.nextInt(array.length)];
     }
-
-
 
 }
