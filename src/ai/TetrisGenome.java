@@ -91,6 +91,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
             int score = evaluateBoard(current);
             if(score > maxScore) {
                 maxBoard = current;
+                maxScore = score;
             }
         }
         return maxBoard;

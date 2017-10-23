@@ -41,6 +41,7 @@ public class Simulator {
             width = Integer.parseInt(args[6]);
             height = Integer.parseInt(args[7]);
             sim = new Simulator(threads, size, crossRate, mutationRate, mutationStep, seed, width, height);
+
         }
         catch(Exception e) {
             System.out.println("Invalid command line args, try again:");
@@ -88,6 +89,7 @@ public class Simulator {
 
     private void executeGeneration() {
         Collection<Future<?>> futures = new LinkedList<>();
+
         for(Game game : population) {
             game.reset();
             futures.add(executor.submit(game));

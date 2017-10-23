@@ -15,12 +15,12 @@ public class Game implements Runnable{
     public TetrisGenome genome;
 
     public Game(TetrisGenome genome, int width, int height, long seed){
+        this.rand = new Random(seed);
         this.height  = height;
         this.width = width;
         this.genome = genome;
-        shapes = new ArrayList<>();
-        board = new Board(height, width, rand.nextInt());
-        rand = new Random(seed);
+        this.shapes = new ArrayList<>();
+        this.board = new Board(height, width, rand.nextInt());
         addDefaultShapes();
     }
 
@@ -81,7 +81,7 @@ public class Game implements Runnable{
         Board stepBoard = genome.makeMove(this.board, shape);
         int[] clearedRows = stepBoard.getFullRows();
         scoreCleared(clearedRows);
-        stepBoard.collapseRows(clearedRows);
+        stepBoard = stepBoard.collapseRows(clearedRows);
         this.board = stepBoard;
     }
 
