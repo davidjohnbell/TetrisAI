@@ -19,6 +19,6 @@ class ShapeTest {
             {1,0,0}});
         shape.rotate(3);
         Matrix current = shape.getCurrent();
-        Assertions.assertEquals(current, left);
+        Assertions.assertTrue(current.equals(left));
     }
 }

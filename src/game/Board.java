@@ -58,9 +58,18 @@ public class Board extends Matrix {
     }
 
     public int[] getFullRows() {
-        int[] clearedIndexes = new int[getHeight()];
-        for(int i = 0; i < getHeight(); i++) {
-            if(sumRow(i) >= getWidth()) {
+        int height = getHeight();
+        int width = getWidth();
+        int[] clearedIndexes = new int[height];
+        for(int i = 0; i < height; i++) {
+            boolean cleared = true;
+            for(int j = 0; j < width; j++) {
+                if(getElement(i, j) == 0) {
+                    cleared = false;
+                    break;
+                }
+            }
+            if(cleared) {
                 clearedIndexes[i] = 1;
             }
         }

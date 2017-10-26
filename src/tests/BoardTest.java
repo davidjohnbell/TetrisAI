@@ -45,6 +45,16 @@ class BoardTest {
     }
 
     @Test
+    void dropShape() {
+        int lastIndex = board.getHeight() - 1;
+        board.setElement(lastIndex, 1, 5);
+        Matrix is = board.dropShape(shape);
+        Assertions.assertTrue(is.sumRow(lastIndex) == 5);
+        Assertions.assertTrue(is.sumRow(lastIndex - 1) == 2);
+        Assertions.assertTrue(is.sumRow(lastIndex - 2) == 2);
+    }
+
+    @Test
     void collision() {
         board.setElement(1,0, 5);
         Matrix applied = board.applyShape(shape);
@@ -54,13 +64,13 @@ class BoardTest {
 
     @Test
     void getFullRows() {
-        for(int i = 0; i < board.getHeight(); i += 2) {
-            for(int j = 0; j < board.getWidth(); j++) {
-                board.setElement(i, j, 1);
-            }
+        for(int i = 0; i < board.getWidth(); i ++) {
+            board.setElement(0, i, 1);
+            board.setElement(2, i, 1);
         }
+        board.setElement(3, 0, 10);
         int[] cleared = board.getFullRows();
-        Assertions.assertArrayEquals(cleared, new int[] {1,0,1,0,1,0,1,0});
+        Assertions.assertArrayEquals(cleared, new int[] {1,0,1,0,0,0,0,0});
     }
 
     @Test

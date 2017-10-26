@@ -74,7 +74,7 @@ public class Game implements Runnable{
         shapes.add(S);
     }
 
-    private void step() {
+    public void step() {
         Shape shape = shapes.get(rand.nextInt(shapes.size()));
         shape.x = 0;
         shape.y = 0;
@@ -85,7 +85,7 @@ public class Game implements Runnable{
         this.board = stepBoard;
     }
 
-    private void scoreCleared(int[] cleared) {
+    public void scoreCleared(int[] cleared) {
         for(int i = 0; i < cleared.length; i++) {
             if(cleared[i] > 0) {
                 int sum = 0;

@@ -16,13 +16,7 @@ public class Matrix {
 
     public void transpose() {
         int height = getHeight(), width = getWidth();
-        int[][] inverse;
-        if(height != width) {
-            inverse = new int[width][height];
-        }
-        else {
-            inverse = this.data;
-        }
+        int[][] inverse = new int[width][height];
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 inverse[j][i] = data[i][j];

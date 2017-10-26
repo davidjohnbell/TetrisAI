@@ -26,9 +26,11 @@ public class Shape {
 
     public void rotate(int n) {
         n = Math.abs(n);
-        rotationIndex += n;
-        if(rotationIndex >= rotations.length) {
-            rotationIndex %= rotations.length;
+        for(int i = 0; i < n; i++) {
+            rotationIndex++;
+            if(rotationIndex >= rotations.length) {
+                rotationIndex = 0;
+            }
         }
     }
 
