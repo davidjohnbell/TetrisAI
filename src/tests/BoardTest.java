@@ -47,25 +47,18 @@ class BoardTest {
     void dropShape() {
         int testIndex = board.getHeight() - 3;
         board.setElement(testIndex, 1, 5);
-        Matrix is = board.dropShape(shape);
-        Assertions.assertTrue(is.sumRow(testIndex) == 5);
-        Assertions.assertTrue(is.sumRow(testIndex - 1) == 2);
-        Assertions.assertTrue(is.sumRow(testIndex - 2) == 2);
+        Assertions.assertTrue(board.sumRow(testIndex) == 5);
+        Assertions.assertTrue(board.sumRow(testIndex - 1) == 2);
+        Assertions.assertTrue(board.sumRow(testIndex - 2) == 2);
     }
 
     @Test
     void dropThreeShapes() {
-        Matrix is;
         for(int i = 0; i < 3; i++) {
-            is = board.dropShape(shape);
-            board = new Board(is, board.id + 1);
+            board.dropShape(shape);
         }
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                if(board.getElement(i, j) > 1) {
-                    Assertions.fail("Board is not valid!");
-                }
-            }
+        for(int i = 0; i < board.getHeight(); i++) {
+            Assertions.assertTrue(board.sumRow(1) <= 2);
         }
     }
 
@@ -100,16 +93,15 @@ class BoardTest {
             board.setElement(i, 0, 1);
         }
         int[] cleared = board.getFullRows();
-        Board collapsed = board.collapseRows(cleared);
-        int sum = collapsed.sumCol(0);
+        board.collapseRows(cleared);
+        int sum = board.sumCol(0);
         Assertions.assertEquals(4,sum);
     }
 
     @Test
     void isGameOver() {
         board.setElement(0, 0, 1);
-        boolean lost = board.isGameOver();
-        Assertions.assertTrue(lost);
+        Assertions.assertTrue(board.isGameOver());
     }
 
 }
