@@ -53,12 +53,16 @@ public class Board extends Matrix {
         return false;
     }
 
-    public Board dropShape(Shape shape) {
+    public void dropShape(Shape shape) {
         Matrix applied = applyShape(shape);
         while(collision(applied) == false) {
             applied.downShift();
         }
-        return new Board(Matrix.add(this, applied),id+1);
+        for(int i = 0; i < getHeight(); i++) {
+            for(int j = 0; j < getWidth(); j++) {
+                setElement(i, j, applied.getElement(i, j));
+            }
+        }
     }
 
     public int[] getFullRows() {
@@ -80,7 +84,7 @@ public class Board extends Matrix {
         return clearedIndexes;
     }
 
-    public Board collapseRows(int[] clearedIndexes) {
+    public void collapseRows(int[] clearedIndexes) {
         int rows = getHeight();
         int cols = getWidth();
         int[][] newData = new int[rows][cols];
@@ -91,7 +95,7 @@ public class Board extends Matrix {
                 last--;
             }
         }
-        return new Board(new Matrix(newData), id);
+        this.setData(newData);
     }
 
     public boolean isGameOver() {
