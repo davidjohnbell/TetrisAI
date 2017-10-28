@@ -31,10 +31,9 @@ class TetrisGenomeTest {
     }
 
     @Test
-    void evaluateBoard() {
+    void evaluateBoardDoesNotModify() {
         Board copy = new Board(Matrix.copy(base), 1235);
-        genome.evaluateBoard(board);
+        genome.evaluateBoard(copy);
         Assertions.assertTrue(board.equals(copy));
     }
-
 }

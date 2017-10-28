@@ -44,6 +44,10 @@ public class Board extends Matrix {
                 && getElement(i+1, j) > 0) {
                     return true;
                 }
+                else if(appliedShape.getElement(i, j) > 0
+                        && getElement(i, j) > 0) {
+                    return true;
+                }
             }
         }
         return false;

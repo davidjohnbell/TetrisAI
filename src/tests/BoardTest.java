@@ -22,8 +22,7 @@ class BoardTest {
     private Shape shape = new Shape(
         new int[][] {
             {1,1,0},
-            {0,1,1},
-            {0,0,0}});
+            {0,1,1}});
 
     @Test
     void applyShape() {
@@ -33,9 +32,9 @@ class BoardTest {
         Matrix shouldBe = new Matrix(
             new int[][] {
                 {0,0,0,0},
-                {0,0,0,1},
-                {0,0,1,1},
                 {0,0,1,0},
+                {0,1,1,0},
+                {0,1,0,0},
                 {0,0,0,0},
                 {0,0,0,0},
                 {0,0,0,0},
@@ -46,16 +45,33 @@ class BoardTest {
 
     @Test
     void dropShape() {
-        int lastIndex = board.getHeight() - 1;
-        board.setElement(lastIndex, 1, 5);
+        int testIndex = board.getHeight() - 3;
+        board.setElement(testIndex, 1, 5);
         Matrix is = board.dropShape(shape);
-        Assertions.assertTrue(is.sumRow(lastIndex) == 5);
-        Assertions.assertTrue(is.sumRow(lastIndex - 1) == 2);
-        Assertions.assertTrue(is.sumRow(lastIndex - 2) == 2);
+        Assertions.assertTrue(is.sumRow(testIndex) == 5);
+        Assertions.assertTrue(is.sumRow(testIndex - 1) == 2);
+        Assertions.assertTrue(is.sumRow(testIndex - 2) == 2);
+    }
+
+    @Test
+    void dropThreeShapes() {
+        Matrix is;
+        for(int i = 0; i < 3; i++) {
+            is = board.dropShape(shape);
+            board = new Board(is, board.id + 1);
+        }
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                if(board.getElement(i, j) > 1) {
+                    Assertions.fail("Board is not valid!");
+                }
+            }
+        }
     }
 
     @Test
     void collision() {
+        shape.rotate(1);
         board.setElement(1,0, 5);
         Matrix applied = board.applyShape(shape);
         boolean oops = board.collision(applied);
