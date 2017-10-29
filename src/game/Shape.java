@@ -35,7 +35,7 @@ public class Shape {
     }
 
     public Matrix getCurrent() {
-        return rotations[rotationIndex];
+        return Matrix.copy(rotations[rotationIndex]);
     }
 
     @Override
@@ -45,9 +45,6 @@ public class Shape {
         if (obj == this)
             return true;
         Shape shape = (Shape) obj;
-        if(shape.getCurrent().equals(shape.getCurrent()))
-            return true;
-        else
-            return false;
+        return shape.getCurrent().equals(shape.getCurrent());
     }
 }

@@ -4,16 +4,16 @@ import utils.Matrix;
 import java.util.Arrays;
 
 public class Board extends Matrix {
-    public final int id;
-
-    public Board(int rows, int columns, int id) {
+    public Board(int rows, int columns) {
         super(columns, rows);
-        this.id = id;
     }
 
-    public Board(Matrix boardMatrix, int id) {
+    public Board(Matrix boardMatrix) {
         super(boardMatrix.getData());
-        this.id = id;
+    }
+
+    public Board(Board board) {
+        super(board.getData());
     }
 
     public Matrix applyShape(Shape shape) {
@@ -55,12 +55,14 @@ public class Board extends Matrix {
 
     public void dropShape(Shape shape) {
         Matrix applied = applyShape(shape);
-        while(collision(applied) == false) {
+        while(!collision(applied)) {
             applied.downShift();
         }
         for(int i = 0; i < getHeight(); i++) {
             for(int j = 0; j < getWidth(); j++) {
-                setElement(i, j, applied.getElement(i, j));
+                int boardElem = getElement(i, j);
+                int appliedElem = applied.getElement(i, j);
+                setElement(i, j, appliedElem + boardElem);
             }
         }
     }
@@ -87,15 +89,16 @@ public class Board extends Matrix {
     public void collapseRows(int[] clearedIndexes) {
         int rows = getHeight();
         int cols = getWidth();
-        int[][] newData = new int[rows][cols];
+        int[][] prime = new int[rows][cols];
+        int[][] old = getData();
         int last = rows - 1;
-        for(int i = rows - 1; i > 0; i--) {
+        for(int i = last; i >= 0; i--) {
             if(clearedIndexes[i] == 0) {
-                newData[last] =  Arrays.copyOf(getData()[i], cols);
+                prime[last] =  Arrays.copyOf(old[i], cols);
                 last--;
             }
         }
-        this.setData(newData);
+        this.setData(prime);
     }
 
     public boolean isGameOver() {

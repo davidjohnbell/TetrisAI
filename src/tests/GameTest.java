@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 
 class GameTest {
-    Game game;
-    TetrisGenome genome;
+    private Game game;
+    private TetrisGenome genome;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +43,7 @@ class GameTest {
                 }
             }
         }
-        catch (Exception e) {}
+        catch (Exception e) {Assertions.fail(e);}
     }
 
 }

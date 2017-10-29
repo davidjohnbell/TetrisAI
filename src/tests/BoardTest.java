@@ -17,8 +17,7 @@ class BoardTest {
                 {0,0,0,0},
                 {0,0,0,0},
                 {0,0,0,0},
-                {0,0,0,0}}),
-        1234);
+                {0,0,0,0}}));
     private Shape shape = new Shape(
         new int[][] {
             {1,1,0},
@@ -47,6 +46,7 @@ class BoardTest {
     void dropShape() {
         int testIndex = board.getHeight() - 3;
         board.setElement(testIndex, 1, 5);
+        board.dropShape(shape);
         Assertions.assertTrue(board.sumRow(testIndex) == 5);
         Assertions.assertTrue(board.sumRow(testIndex - 1) == 2);
         Assertions.assertTrue(board.sumRow(testIndex - 2) == 2);
@@ -83,7 +83,7 @@ class BoardTest {
     }
 
     @Test
-    void collapseRows() {
+    void shouldCollapseRows() {
         for(int i = 0; i < board.getHeight(); i += 2) {
             for(int j = 0; j < board.getWidth(); j++) {
                 board.setElement(i, j, 1);
@@ -96,6 +96,17 @@ class BoardTest {
         board.collapseRows(cleared);
         int sum = board.sumCol(0);
         Assertions.assertEquals(4,sum);
+    }
+
+    @Test
+    void shouldNotCollapseRows() {
+        for(int i = 0; i < board.getHeight(); i ++) {
+            board.setElement(i, 0, 1);
+        }
+        int[] cleared = new int[board.getHeight()];
+        board.collapseRows(cleared);
+        int sum = board.sumCol(0);
+        Assertions.assertEquals(board.getHeight(),sum);
     }
 
     @Test

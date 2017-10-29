@@ -11,7 +11,12 @@ public class Matrix {
     }
 
     public Matrix(int[][] data) {
-        this.data = data;
+        int height = data.length;
+        int width = data[0].length;
+        this.data = new int[height][width];
+        for(int i = 0; i < height; i++) {
+            this.data[i] = Arrays.copyOf(data[i], width);
+        }
     }
 
     public void transpose() {
@@ -87,9 +92,7 @@ public class Matrix {
         int rows = Math.min(height, getHeight());
         int columns = Math.min(width, getWidth());
         for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < columns; j++) {
-                data[i][j] = this.data[i][j];
-            }
+            data[i] = Arrays.copyOf(this.data[i], columns);
         }
         this.data = data;
     }
@@ -148,28 +151,6 @@ public class Matrix {
             this.data[i] = Arrays.copyOf(this.data[i-1], cols);
         }
         Arrays.fill(this.data[0], 0);
-    }
-
-    public void shift(int x, int y) {
-        boolean left = (x < 0);
-        boolean up = (y < 0);
-        x = Math.abs(x);
-        for(int i = 0; i < x; i ++) {
-            if(left) {
-                leftShift();
-            }
-            else {
-                rightShift();
-            }
-        }
-        for(int i = 0; i < y; i++) {
-            if(up) {
-                upShift();
-            }
-            else {
-                downShift();
-            }
-        }
     }
 
     public static Matrix copy(Matrix matrix) {

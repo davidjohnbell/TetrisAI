@@ -10,9 +10,10 @@ import utils.Matrix;
 
 
 class TetrisGenomeTest {
-    TetrisGenome genome;
-    Matrix base;
-    Board board;
+    private TetrisGenome genome;
+    private Matrix base;
+    private Board board;
+    private Shape shape;
 
     @BeforeEach
     void setUp() {
@@ -27,13 +28,24 @@ class TetrisGenomeTest {
                 {0,0,0,1},
                 {0,0,2,2},
                 {3,3,3,3}});
-        board = new Board(base, 1234);
+        board = new Board(base);
+        shape = new  Shape(
+            new int[][] {
+                {2,0},
+                {2,2}});
     }
 
     @Test
     void evaluateBoardDoesNotModify() {
-        Board copy = new Board(Matrix.copy(base), 1235);
+        Board copy = new Board(board);
         genome.evaluateBoard(copy);
         Assertions.assertTrue(board.equals(copy));
+    }
+
+    @Test
+    void makeMoveDoesNotModify() {
+        Board copy = new Board(Matrix.copy(base));
+        genome.makeMove(board, shape);
+        Assertions.assertTrue(copy.equals(board));
     }
 }

@@ -103,7 +103,9 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
             for(int i = 0; i < board.getWidth(); i++) {
                 shape.x = i;
                 shape.y = 0;
-                boards.add(board.dropShape(shape));
+                Board copyBoard = new Board(board);
+                copyBoard.dropShape(shape);
+                boards.add(copyBoard);
             }
             shape.rotate(1);
         }
@@ -130,10 +132,12 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
                 if(elem > 0) {
                     break;
                 }
-                net[i] = net[i] - 1;
+                else {
+                    net[i] = net[i] - 1;
+                }
             }
         }
-        int large = net[0], small = net[0];
+        int small = net[0], large = net[net.length-1];
         for(int i = 1; i < net.length; i++) {
             if(net[i] > large) {
                 large = net[i];

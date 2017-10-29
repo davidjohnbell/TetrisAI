@@ -20,7 +20,7 @@ public class Game implements Runnable{
         this.width = width;
         this.genome = genome;
         this.shapes = new ArrayList<>();
-        this.board = new Board(height, width, rand.nextInt());
+        this.board = new Board(height, width);
         addDefaultShapes();
     }
 
@@ -29,7 +29,7 @@ public class Game implements Runnable{
             shape.x = 0;
             shape.y = 0;
         }
-        board = new Board(height, width, rand.nextInt());
+        board = new Board(height, width);
     }
 
     private void addDefaultShapes(){
