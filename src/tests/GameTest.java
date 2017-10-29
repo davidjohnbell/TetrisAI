@@ -27,21 +27,22 @@ class GameTest {
     }
 
     @Test
-    void boardIsValid() {
-        for (int i = 0; i < 100; i++) {
-            game.step();
-        }
+    void tryGame() {
         try {
             Field field = game.getClass().getDeclaredField("board");
             field.setAccessible(true);
             Board board = (Board)field.get(game);
-            for (int i = 0; i < board.getHeight(); i++) {
-                for (int j = 0; j < board.getWidth(); j++) {
-                    if(board.getElement(i, j) > 10) {
-                        Assertions.fail("Board is not valid");
+            while(!board.isGameOver()) {
+                for (int i = 0; i < board.getHeight(); i++) {
+                    for (int j = 0; j < board.getWidth(); j++) {
+                        if(board.getElement(i, j) > 12) {
+                            Assertions.fail("Board is not valid");
+                        }
                     }
                 }
+                game.step();
             }
+
         }
         catch (Exception e) {Assertions.fail(e);}
     }

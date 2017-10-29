@@ -92,7 +92,9 @@ public class Matrix {
         int rows = Math.min(height, getHeight());
         int columns = Math.min(width, getWidth());
         for(int i = 0; i < rows; i++) {
-            data[i] = Arrays.copyOf(this.data[i], columns);
+            for (int j = 0; j < columns; j++) {
+                data[i][j] = this.data[i][j];
+            }
         }
         this.data = data;
     }
@@ -159,8 +161,7 @@ public class Matrix {
         Matrix copy = new Matrix(width, height);
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                copy.setElement(i, j,
-                        matrix.getElement(i, j));
+                copy.setElement(i, j, matrix.getElement(i, j));
             }
         }
         return copy;
