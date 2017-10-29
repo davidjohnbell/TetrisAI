@@ -12,7 +12,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     private float mutateStep;
     private float[] weights;
     private Random rand;
-    public int fitness = 0;
+    public int fitness = Integer.MIN_VALUE;
 
     public TetrisGenome(float mutateRate, float mutateStep, long seed) {
         this.mutateRate = mutateRate;
@@ -32,7 +32,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     public void maybeMutate() {
         for(int i = 0; i < weights.length; i++) {
             if(rand.nextFloat() <= mutateRate) {
-                fitness = Integer.MAX_VALUE;
+                fitness = Integer.MIN_VALUE;
                 if(rand.nextBoolean()) {
                     weights[i] += mutateStep;
                 }

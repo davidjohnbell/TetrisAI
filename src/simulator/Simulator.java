@@ -129,7 +129,14 @@ public class Simulator {
     private void crossGenes() {
         Arrays.sort(population, Comparator.comparingInt(game -> game.genome.fitness));
         TetrisGenome mom = pickRandom(population).genome;
-        population[0].genome = alpha.crossover(mom);
+        int size = population.length - 1;
+        for(int i = 0; i < size; i++) {
+            if(population[i].genome.fitness >= 0) {
+                population[0].genome = alpha.crossover(mom);
+                break;
+            }
+        }
+
     }
 
     private <T> T pickRandom(T[] array) {
