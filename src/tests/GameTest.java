@@ -41,6 +41,7 @@ class GameTest {
                     }
                 }
                 game.step();
+                board = (Board)field.get(game);
             }
 
         }

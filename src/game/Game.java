@@ -105,6 +105,9 @@ public class Game implements Runnable{
 
     @Override
     public void run() {
+        if(genome.fitness > 0) {
+            return;
+        }
         score = 0;
         while(!board.isGameOver()) {
             step();

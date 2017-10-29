@@ -49,8 +49,7 @@ public class Simulator {
             System.exit(-1);
         }
         if(sim != null) {
-            sim.simulate(5);
-            System.out.println(sim.alpha.fitness);
+            sim.simulate(1000);
             sim.shutdown();
         }
     }
@@ -58,6 +57,7 @@ public class Simulator {
     private void simulate(int nGenerations) {
         for(int i = 0; i < nGenerations; i++) {
             stepGeneration();
+            System.out.println(alpha.fitness);
         }
     }
 
@@ -83,7 +83,6 @@ public class Simulator {
         if(rand.nextFloat() < crossRate) {
             crossGenes();
         }
-
         mutateGenes();
     }
 
@@ -128,9 +127,9 @@ public class Simulator {
     }
 
     private void crossGenes() {
-        TetrisGenome dad = pickRandom(population).genome;
+        Arrays.sort(population, Comparator.comparingInt(game -> game.genome.fitness));
         TetrisGenome mom = pickRandom(population).genome;
-        population[0].genome = dad.crossover(mom);
+        population[0].genome = alpha.crossover(mom);
     }
 
     private <T> T pickRandom(T[] array) {

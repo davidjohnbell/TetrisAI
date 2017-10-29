@@ -32,6 +32,7 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     public void maybeMutate() {
         for(int i = 0; i < weights.length; i++) {
             if(rand.nextFloat() <= mutateRate) {
+                fitness = Integer.MAX_VALUE;
                 if(rand.nextBoolean()) {
                     weights[i] += mutateStep;
                 }
