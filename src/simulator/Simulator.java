@@ -59,6 +59,7 @@ public class Simulator {
             stepGeneration();
             System.out.println(alpha.fitness);
         }
+        System.out.println(alpha.toString());
     }
 
     private Game[] createPopulation(int size, int width, int height, float mutationStep, float mutationRate, Random seedGenerator) {

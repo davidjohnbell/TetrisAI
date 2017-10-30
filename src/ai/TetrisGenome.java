@@ -192,4 +192,14 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         }
         return total;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Weights: ");
+        for(int i = 0; i < weights.length; i++) {
+            builder.append(String.format("%s, ", weights[i]));
+        }
+        return builder.toString();
+    }
 }
