@@ -12,9 +12,9 @@ public class Shape {
         Matrix original = new Matrix(shapeData);
         this.rotations = new Matrix[] {
             original,
-            Matrix.copy(original),
-            Matrix.copy(original),
-            Matrix.copy(original)};
+            new Matrix(original),
+            new Matrix(original),
+            new Matrix(original)};
         for(int i = 0; i < 4; i++) {
 
             this.rotations[i].rotateRight(i);
@@ -35,7 +35,7 @@ public class Shape {
     }
 
     public Matrix getCurrent() {
-        return Matrix.copy(rotations[rotationIndex]);
+        return new Matrix(rotations[rotationIndex]);
     }
 
     @Override

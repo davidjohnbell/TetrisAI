@@ -44,7 +44,7 @@ class TetrisGenomeTest {
 
     @Test
     void makeMoveDoesNotModify() {
-        Board copy = new Board(Matrix.copy(base));
+        Board copy = new Board(new Matrix(base));
         genome.makeMove(board, shape);
         Assertions.assertTrue(copy.equals(board));
     }

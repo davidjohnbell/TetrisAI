@@ -6,10 +6,19 @@ public class Matrix {
     private int[][] data;
 
 
+    /**
+     * Initialize a new matrix with zeroes.
+     * @param width the number of columns
+     * @param height the number of rows
+     */
     public Matrix(int width, int height) {
         data = new int[height][width];
     }
 
+    /**
+     * Initializes a new matrix with the provided values.
+     * @param data the provided values
+     */
     public Matrix(int[][] data) {
         int height = data.length;
         int width = data[0].length;
@@ -19,6 +28,22 @@ public class Matrix {
         }
     }
 
+    /**
+     * Copy constructor, initializes by copying values from provided matrix.
+     * @param matrix values to copy
+     */
+    public Matrix(Matrix matrix) {
+        int width = matrix.getWidth();
+        int height = matrix.getHeight();
+        this.data = new int[height][width];
+        for(int i = 0; i < height; i++) {
+            this.data[i] = Arrays.copyOf(data[i], width);
+        }
+    }
+
+    /**
+     * Swaps the matrix's rows with its columns.
+     */
     public void transpose() {
         int height = getHeight(), width = getWidth();
         int[][] inverse = new int[width][height];
@@ -46,6 +71,7 @@ public class Matrix {
             stop--;
         }
     }
+
     public void reverseColumns() {
         int width = getWidth(), height = getHeight();
         for(int i = 0; i < width; i++) {
@@ -60,6 +86,10 @@ public class Matrix {
         }
     }
 
+    /**
+     * Rotate right n number of times.
+     * @param n number of rotations
+     */
     public void rotateRight(int n) {
         for(int i = 0; i < n; i++) {
             transpose();
@@ -67,6 +97,10 @@ public class Matrix {
         }
     }
 
+    /**
+     * Rotate left n number of times.
+     * @param n number of rotations
+     */
     public void rotateLeft(int n) {
         for(int i = 0; i < n; i++) {
             transpose();
@@ -74,6 +108,9 @@ public class Matrix {
         }
     }
 
+    /**
+     * Adds two matrices, matrix B must be greater or equal in both height and width to that of A.
+     */
     public static Matrix add(Matrix A, Matrix B) {
         int width = A.getWidth();
         int height = A.getHeight();
@@ -87,6 +124,11 @@ public class Matrix {
         return C;
     }
 
+    /**
+     * Resizes the matrix. If the new matrix is larger than the new elements will be initialized to zero.
+     * @param width number of columns
+     * @param height number of rows
+     */
     public void resize(int width, int height) {
         int[][] data = new int[height][width];
         int rows = Math.min(height, getHeight());
@@ -99,6 +141,11 @@ public class Matrix {
         this.data = data;
     }
 
+    /**
+     * Sums each element of the row.
+     * @param row zero indexed row number
+     * @return the sum of that row
+     */
     public int sumRow(int row) {
         int sum = 0;
         for(int value : this.data[row]) {
@@ -107,6 +154,11 @@ public class Matrix {
         return sum;
     }
 
+    /**
+     * Sums each element of the column.
+     * @param col zero indexed column number
+     * @return the sum of that row
+     */
     public int sumCol(int col) {
         int sum = 0;
         for(int[] array : this.data) {
@@ -115,6 +167,9 @@ public class Matrix {
         return sum;
     }
 
+    /**
+     * Shifts every element left by one spot, the last column will contain zeroes after.
+     */
     public void leftShift() {
         int rows = getHeight();
         int cols = getWidth();
@@ -126,6 +181,9 @@ public class Matrix {
         }
     }
 
+    /**
+     * Shifts every element right by one spot, the first column will contain zeroes after.
+     */
     public void rightShift() {
         int rows = getHeight();
         int cols = getWidth();
@@ -137,6 +195,9 @@ public class Matrix {
         }
     }
 
+    /**
+     * Shifts every element up one spot, the last row will contain zeroes.
+     */
     public void upShift() {
         int rows = getHeight();
         int cols = getWidth();
@@ -146,6 +207,9 @@ public class Matrix {
         Arrays.fill(this.data[rows-1], 0);
     }
 
+    /**
+     * Shifts every element down one, the first row will contain zeroes after.
+     */
     public void downShift() {
         int rows = getHeight();
         int cols = getWidth();
@@ -155,18 +219,9 @@ public class Matrix {
         Arrays.fill(this.data[0], 0);
     }
 
-    public static Matrix copy(Matrix matrix) {
-        int height = matrix.getHeight();
-        int width = matrix.getWidth();
-        Matrix copy = new Matrix(width, height);
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                copy.setElement(i, j, matrix.getElement(i, j));
-            }
-        }
-        return copy;
-    }
-
+    /**
+     * Two obj are equal if and only if they are both instances of Matrix and all elements are equal in value.
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Matrix))
