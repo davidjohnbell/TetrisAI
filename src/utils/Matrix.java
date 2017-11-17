@@ -245,6 +245,10 @@ public class Matrix {
 
     public int getWidth() { return this.data[0].length;}
     public int getHeight() { return this.data.length;}
+
+    /**
+     * @return a reference to the internal 2D array used to store the matrix values.
+     */
     public int[][] getData(){ return this.data;}
     public int getElement(int row, int column) { return this.data[row][column];}
     public void setElement(int row, int column, int value) { this.data[row][column] = value;}

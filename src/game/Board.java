@@ -4,10 +4,20 @@ import utils.Matrix;
 import java.util.Arrays;
 
 public class Board extends Matrix {
+
+    /**
+     * Initializes a new board to the specified dimensions.
+     * @param rows the number of rows
+     * @param columns the number of columns
+     */
     public Board(int rows, int columns) {
         super(columns, rows);
     }
 
+    /**
+     * Initializes a new board with the specified values.
+     * @param boardMatrix the board data values
+     */
     public Board(Matrix boardMatrix) {
         super(boardMatrix.getData());
     }
@@ -16,6 +26,12 @@ public class Board extends Matrix {
         super(board.getData());
     }
 
+    /**
+     * Creates a blank matrix with the same dimensions as this board,
+     * the location and rotation of the shape is translated onto the
+     * board.
+     * @return the matrix
+     */
     public Matrix applyShape(Shape shape) {
         Matrix shapeMatrix = shape.getCurrent();
         shapeMatrix.resize(getWidth(), getHeight());
@@ -32,6 +48,11 @@ public class Board extends Matrix {
         return shapeMatrix;
     }
 
+    /**
+     * A collision is detected when an non zero element of the matrix
+     * is directly above a non zero element of the board, or when
+     * an element of the matrix occupies the last row of the board.
+     */
     public boolean collision(Matrix appliedShape) {
         int rows = appliedShape.getHeight();
         int cols = appliedShape.getWidth();
@@ -53,6 +74,11 @@ public class Board extends Matrix {
         return false;
     }
 
+    /**
+     * The shape is translated onto the board and moves down until
+     * a collision is detected or the end of the board is reached.
+     * @param shape the shape to be dropped
+     */
     public void dropShape(Shape shape) {
         Matrix applied = applyShape(shape);
         while(!collision(applied)) {
@@ -67,6 +93,12 @@ public class Board extends Matrix {
         }
     }
 
+    /**
+     * A full row contains no elements equal to zero. If row i
+     * of the board is full then element i of the returned matrix
+     * is equal to one, zero otherwise.
+     * @return the array with indexes of full rows
+     */
     public int[] getFullRows() {
         int height = getHeight();
         int width = getWidth();
@@ -86,6 +118,13 @@ public class Board extends Matrix {
         return clearedIndexes;
     }
 
+    /**
+     * When a row i is collapsed all rows above it are shifted down.
+     * The top row of the board will contain zeroes.
+     * @param clearedIndexes an array with length equal to the height
+     *                       of the board, and non zero values
+     *                       representing which rows should be collapsed.
+     */
     public void collapseRows(int[] clearedIndexes) {
         int rows = getHeight();
         int cols = getWidth();
@@ -101,6 +140,10 @@ public class Board extends Matrix {
         this.setData(prime);
     }
 
+    /**
+     * A loss is detected when the top row of the board contains a non zero
+     * value. The board height should account for spawning the shape.
+     */
     public boolean isGameOver() {
         return ( sumRow(0) > 0);
     }
