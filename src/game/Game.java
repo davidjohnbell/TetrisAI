@@ -14,6 +14,13 @@ public class Game implements Runnable{
     private int score;
     public TetrisGenome genome;
 
+    /**
+     *
+     * @param genome the genome to play the game with
+     * @param width the width of the board
+     * @param height the height of the board
+     * @param seed the seed used to spawn shapes
+     */
     public Game(TetrisGenome genome, int width, int height, long seed){
         this.rand = new Random(seed);
         this.height  = height;
@@ -24,6 +31,11 @@ public class Game implements Runnable{
         addDefaultShapes();
     }
 
+    /**
+     * Iterates over the boards shapes and resets
+     * their positions. A new board instance is
+     * then created for a new game.
+     */
     public void reset() {
         for(Shape shape : shapes) {
             shape.x = 0;
@@ -32,6 +44,9 @@ public class Game implements Runnable{
         board = new Board(height, width);
     }
 
+    /**
+     * Default shapes are I, O, L, J, Z, S.
+     */
     private void addDefaultShapes(){
         Shape I = new Shape(
             new int[][] {
@@ -72,6 +87,14 @@ public class Game implements Runnable{
         shapes.add(S);
     }
 
+    /**
+     * Choose a shape from the shape bag, reset its position,
+     * and then feed the board and the shape to the genome.
+     * The genome analyses the possible moves and scores
+     * each move with the genomes chromosomes. The highest
+     * scoring board is returned as output and the game
+     * continues with that board.
+     */
     public void step() {
         Shape shape = shapes.get(rand.nextInt(shapes.size()));
         shape.x = 0;
@@ -83,6 +106,12 @@ public class Game implements Runnable{
         this.board = stepBoard;
     }
 
+    /**
+     * The score of a row is calculated by the width of the row.
+     * A multiplier is used for consecutively full rows.
+     * @param cleared an array with non zero values representing
+     *                who's non zero elements represent full rows.
+     */
     public void scoreCleared(int[] cleared) {
         for(int i = 0; i < cleared.length; i++) {
             if(cleared[i] > 0) {
@@ -103,6 +132,12 @@ public class Game implements Runnable{
         }
     }
 
+    /**
+     * Sets the fitness of the genome by playing the game.
+     * The fitness is equal to the score achieved in the game.
+     * Only simulate a game if the genome doesn't have a
+     * fitness score yet.
+     */
     @Override
     public void run() {
         if(genome.fitness > 0) {
