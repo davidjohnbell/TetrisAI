@@ -1,6 +1,6 @@
 package tests;
 
-import ai.TetrisGenome;
+import ai.ATetrisGenome;
 import game.Board;
 import game.Game;
 import org.junit.jupiter.api.AfterEach;
@@ -12,11 +12,11 @@ import java.lang.reflect.Field;
 
 class GameTest {
     private Game game;
-    private TetrisGenome genome;
+    private ATetrisGenome genome;
 
     @BeforeEach
     void setUp() {
-        genome = new TetrisGenome(0.2f, 0.2f, 0);
+        genome = new ATetrisGenome(0.2f, 0.2f, 0);
         game = new Game(genome, 5, 10, 0);
     }
 

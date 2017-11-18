@@ -1,6 +1,6 @@
 package game;
 
-import ai.TetrisGenome;
+import ai.ATetrisGenome;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +12,7 @@ public class Game implements Runnable{
     private final int height;
     private ArrayList<Shape> shapes;
     private int score;
-    public TetrisGenome genome;
+    public ATetrisGenome genome;
 
     /**
      *
@@ -21,7 +21,7 @@ public class Game implements Runnable{
      * @param height the height of the board
      * @param seed the seed used to spawn shapes
      */
-    public Game(TetrisGenome genome, int width, int height, long seed){
+    public Game(ATetrisGenome genome, int width, int height, long seed){
         this.rand = new Random(seed);
         this.height  = height;
         this.width = width;

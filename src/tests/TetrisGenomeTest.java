@@ -1,6 +1,6 @@
 package tests;
 
-import ai.TetrisGenome;
+import ai.ATetrisGenome;
 import game.Board;
 import game.Shape;
 import org.junit.jupiter.api.Assertions;
@@ -10,14 +10,14 @@ import utils.Matrix;
 
 
 class TetrisGenomeTest {
-    private TetrisGenome genome;
+    private ATetrisGenome genome;
     private Matrix base;
     private Board board;
     private Shape shape;
 
     @BeforeEach
     void setUp() {
-        genome = new TetrisGenome(0.2f, 0.2f, 0);
+        genome = new ATetrisGenome(0.2f, 0.2f, 0);
         base = new Matrix(
             new int[][] {
                 {0,0,0,0},

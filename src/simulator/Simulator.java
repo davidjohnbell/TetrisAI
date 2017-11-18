@@ -1,6 +1,6 @@
 package simulator;
 
-import ai.TetrisGenome;
+import ai.ATetrisGenome;
 import game.Game;
 
 import java.util.*;
@@ -12,7 +12,7 @@ public class Simulator {
     private Random rand;
     private ThreadPoolExecutor executor;
     private Game[] population;
-    private TetrisGenome alpha;
+    private ATetrisGenome alpha;
 
     private Simulator(int threads, int size, float crossRate, float mutationRate, float mutationStep, long seed, int width, int height) {
         rand = new Random(seed);
@@ -66,7 +66,7 @@ public class Simulator {
         long gameSeed = seedGenerator.nextLong();
         Game[] population = new Game[size];
         for(int i = 0; i < size; i++) {
-            TetrisGenome genome = new TetrisGenome(mutationRate, mutationStep, seedGenerator.nextLong());
+            ATetrisGenome genome = new ATetrisGenome(mutationRate, mutationStep, seedGenerator.nextLong());
             population[i] = new Game(genome, width, height, gameSeed);
         }
         return  population;
@@ -76,7 +76,7 @@ public class Simulator {
         executeGeneration();
         Arrays.sort(population, Comparator.comparingInt(game -> game.genome.fitness));
 
-        TetrisGenome beta = population[population.length - 1].genome;
+        ATetrisGenome beta = population[population.length - 1].genome;
         if(alpha == null || alpha.fitness < beta.fitness) { //java is short circuit
             alpha = beta;
         }
@@ -129,7 +129,7 @@ public class Simulator {
 
     private void crossGenes() {
         Arrays.sort(population, Comparator.comparingInt(game -> game.genome.fitness));
-        TetrisGenome mom = pickRandom(population).genome;
+        ATetrisGenome mom = pickRandom(population).genome;
         int size = population.length - 1;
         for(int i = 0; i < size; i++) {
             if(population[i].genome.fitness >= 0) {
