@@ -14,6 +14,12 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
     private Random rand;
     public int fitness = Integer.MIN_VALUE;
 
+    /**
+     * Creates a new genome.
+     * @param mutateRate the probability a chromosome weight will change.
+     * @param mutateStep the +/- difference that can occur during a mutation.
+     * @param seed a deterministic seed for the initial chromosome weights.
+     */
     public TetrisGenome(float mutateRate, float mutateStep, long seed) {
         this.mutateRate = mutateRate;
         this.mutateStep = mutateStep;
@@ -29,20 +35,30 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         }
     }
 
+    /**
+     * Uses the seed to deterministically mutate the genome.
+     * If a mutation occurs then each of the chromosome weights
+     * will randomly step forward or back.
+     */
     public void maybeMutate() {
-        for(int i = 0; i < weights.length; i++) {
-            if(rand.nextFloat() <= mutateRate) {
+        if(rand.nextFloat() < mutateRate) {
+            for (int i = 0; i < weights.length; i++) {
                 fitness = Integer.MIN_VALUE;
-                if(rand.nextBoolean()) {
+                if (rand.nextBoolean()) {
                     weights[i] += mutateStep;
-                }
-                else {
+                } else {
                     weights[i] -= mutateStep;
                 }
             }
         }
     }
 
+    /**
+     * Creates a new genome, the genome will randomly receive
+     * chromosome weights from this genome or the partner genome.
+     * @param partner genome that child may receive weights from
+     * @return
+     */
     public TetrisGenome crossover(TetrisGenome partner) {
         TetrisGenome child = new TetrisGenome(mutateRate, mutateStep, rand.nextLong());
         for(int i = 0; i < weights.length; i++) {
@@ -67,6 +83,13 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return chromosomes;
     }
 
+    /**
+     * The genome runs the board through each chromosome, the
+     * weights are applied to each of the results and the total
+     * is added up.
+     * @param board the board to run through chromosomes
+     * @return the score achieved from chromosomes
+     */
     public int evaluateBoard(Board board) {
         ArrayList<Method> chromosomes = getChromosomes();
         int i = 0;
@@ -83,6 +106,14 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return sum;
     }
 
+    /**
+     * Moves and rotates the shape to find all possible moves.
+     * The genome scores each move and returns the board with
+     * the optimal move based on the current chromosome weights.
+     * @param board the current board
+     * @param shape the current shape
+     * @return
+     */
     public Board makeMove(Board board, Shape shape) {
         ArrayList<Board> boards = makeBoards(board, shape);
         int maxScore = Integer.MIN_VALUE;
@@ -113,6 +144,12 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return boards;
     }
 
+    /**
+     * Finds the tallest column on the board and calculates the height
+     * of that column.
+     * @param board the current board
+     * @return the height of the tallest column
+     */
     @SuppressWarnings("unused")
     private int maxHeightChromosome(Board board) {
         for(int i = 0; i < board.getHeight(); i++) {
@@ -123,6 +160,11 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return 0;
     }
 
+    /**
+     * Deermines the difference between the tallest column and the shortest column.
+     * @param board the current board
+     * @return the difference in height
+     */
     @SuppressWarnings("unused")
     private int relativeHeightChromosome(Board board) {
         int[] net = new int[board.getWidth()];
@@ -150,6 +192,13 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return large - small;
     }
 
+    /**
+     * Counts the number of wholes in the board. A hole
+     * is a zero value element that cant be directly filled
+     * in by placing a piece.
+     * @param board the current board
+     * @return the number of holes
+     */
     @SuppressWarnings("unused")
     private int holesChromosome(Board board) {
         int holes = 0;
@@ -168,19 +217,30 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return holes;
     }
 
+    /**
+     * Counts the number of non zero elements in the board.
+     * @param board the current board
+     * @return the number of occupied elements
+     */
     @SuppressWarnings("unused")
     private int filledChromosome(Board board) {
-        int empty = board.getWidth() * board.getHeight();
+        int count = 0;
         for(int i = 0; i < board.getHeight(); i++) {
             for(int j = 0; j < board.getWidth(); j++) {
                 if(board.getElement(i, j) > 0) {
-                    empty--;
+                    count++;
                 }
             }
         }
-        return empty;
+        return count;
     }
 
+    /**
+     * Counts the number of rows that are completely
+     * occupied by game pieces.
+     * @param board the current board
+     * @return the number of cleared rows
+     */
     @SuppressWarnings("unused")
     private int rowsClearedChromosome(Board board) {
         int[] cleared = board.getFullRows();
@@ -193,6 +253,11 @@ public class TetrisGenome implements ITetrisGenome<TetrisGenome> {
         return total;
     }
 
+    /**
+     * Returns the string representation of the weights. The
+     * weights represent how the genome values each
+     * chromosome.
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
