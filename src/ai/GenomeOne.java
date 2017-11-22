@@ -4,14 +4,14 @@ import game.Board;
 
 import java.util.Arrays;
 
-public class TetrisGenome extends ATetrisGenome{
+public class GenomeOne extends AbstractGenome {
     /**
      * Creates a new genome.
      * @param mutateRate the probability a chromosome weight will change.
      * @param mutateStep the +/- difference that can occur during a mutation.
      * @param seed       a deterministic seed for the initial chromosome weights.
      */
-    public TetrisGenome(float mutateRate, float mutateStep, long seed) {
+    public GenomeOne(float mutateRate, float mutateStep, long seed) {
         super(mutateRate, mutateStep, seed);
     }
 
@@ -33,7 +33,7 @@ public class TetrisGenome extends ATetrisGenome{
     }
 
     /**
-     * Deermines the difference between the tallest column and the shortest column.
+     * Determines the difference between the tallest column and the shortest column.
      * @param board the current board
      * @return the difference in height
      */

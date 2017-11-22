@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class ATetrisGenome<T>  {
+public abstract class AbstractGenome<T>  {
     private float mutateRate;
     private float mutateStep;
     private float[] weights;
@@ -21,7 +21,7 @@ public abstract class ATetrisGenome<T>  {
      * @param mutateStep the +/- difference that can occur during a mutation.
      * @param seed a deterministic seed for the initial chromosome weights.
      */
-    public ATetrisGenome(float mutateRate, float mutateStep, long seed) {
+    public AbstractGenome(float mutateRate, float mutateStep, long seed) {
         this.mutateRate = mutateRate;
         this.mutateStep = mutateStep;
         this.rand = new Random(seed);
@@ -60,11 +60,11 @@ public abstract class ATetrisGenome<T>  {
      * @param partner genome that child may receive weights from
      * @return
      */
-    public ATetrisGenome crossover(ATetrisGenome partner) {
+    public AbstractGenome crossover(AbstractGenome partner) {
         try {
             Constructor con = partner.getClass().getDeclaredConstructor(float.class, float.class, long.class);
             con.setAccessible(true);
-            ATetrisGenome child = (ATetrisGenome) con.newInstance(mutateRate, mutateStep, rand.nextLong());
+            AbstractGenome child = (AbstractGenome) con.newInstance(mutateRate, mutateStep, rand.nextLong());
             for(int i = 0; i < weights.length; i++) {
                 if(rand.nextBoolean()) {
                     child.weights[i] = partner.weights[i];
