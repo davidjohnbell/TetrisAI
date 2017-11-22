@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import utils.Matrix;
 
 
-class GenomeOneTest {
+class AbstractGenomeTest {
     private AbstractGenome genome;
     private Matrix base;
     private Board board;
