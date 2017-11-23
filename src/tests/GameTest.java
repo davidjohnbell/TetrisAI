@@ -1,7 +1,7 @@
 package tests;
 
-import ai.AbstractGenome;
-import ai.GenomeOne;
+import genomes.AbstractGenome;
+import genomes.GenomeOne;
 import game.Board;
 import game.Game;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +17,8 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        genome = new GenomeOne(0.2f, 0.2f, 0);
-        game = new Game(genome, 5, 10, 0);
+        genome = new GenomeOne(0);
+        game = new Game(genome, 0);
     }
 
     @AfterEach

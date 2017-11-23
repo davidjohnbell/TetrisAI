@@ -1,18 +1,18 @@
-package ai;
+package genomes;
 
 import game.Board;
 
 import java.util.Arrays;
 
 public class GenomeOne extends AbstractGenome {
+    private final float mutationStep = 0.2f;
+
     /**
      * Creates a new genome.
-     * @param mutateRate the probability a chromosome weight will change.
-     * @param mutateStep the +/- difference that can occur during a mutation.
-     * @param seed       a deterministic seed for the initial chromosome weights.
+     * @param seed a deterministic seed for the initial chromosome weights.
      */
-    public GenomeOne(float mutateRate, float mutateStep, long seed) {
-        super(mutateRate, mutateStep, seed);
+    public GenomeOne(long seed) {
+        super(seed);
     }
 
 
@@ -123,5 +123,40 @@ public class GenomeOne extends AbstractGenome {
             }
         }
         return total;
+    }
+
+    @Override
+    public AbstractGenome crossover(AbstractGenome partner) {
+        GenomeOne child = new GenomeOne(rand.nextLong());
+        float[] momWeights = this.weights;
+        float[] dadWeights = partner.weights;
+        float[] childWeights = child.weights;
+        for(int i = 0; i < childWeights.length; i++) {
+            if(rand.nextBoolean()) {
+                childWeights[i] = momWeights[i];
+            }
+            else {
+                childWeights[i] = dadWeights[i];
+            }
+        }
+        return child;
+    }
+
+    /**
+     * Uses the seed to deterministically mutate the genome.
+     * The chromosome weights will randomly step forward or back
+     * by the distance specified. Mutating will reset the fitness.
+     */
+    @Override
+    public void mutate() {
+        fitness = Integer.MIN_VALUE;
+        float[] weights = this.weights;
+        for (int i = 0; i < weights.length; i++) {
+            if (rand.nextBoolean()) {
+                weights[i] += mutationStep;
+            } else {
+                weights[i] -= mutationStep;
+            }
+        }
     }
 }

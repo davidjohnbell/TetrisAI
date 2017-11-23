@@ -1,4 +1,4 @@
-package ai;
+package genomes;
 
 import game.Board;
 import game.Shape;
@@ -8,22 +8,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class AbstractGenome<T>  {
-    private float mutateRate;
-    private float mutateStep;
-    private float[] weights;
-    private Random rand;
+public abstract class AbstractGenome {
+    protected float[] weights;
+    protected Random rand;
     public int fitness = Integer.MIN_VALUE;
 
     /**
      * Creates a new genome.
-     * @param mutateRate the probability a chromosome weight will change.
-     * @param mutateStep the +/- difference that can occur during a mutation.
      * @param seed a deterministic seed for the initial chromosome weights.
      */
-    public AbstractGenome(float mutateRate, float mutateStep, long seed) {
-        this.mutateRate = mutateRate;
-        this.mutateStep = mutateStep;
+    public AbstractGenome(long seed) {
         this.rand = new Random(seed);
         initWeights();
     }
@@ -37,46 +31,18 @@ public abstract class AbstractGenome<T>  {
     }
 
     /**
-     * Uses the seed to deterministically mutate the genome.
-     * If a mutation occurs then each of the chromosome weights
-     * will randomly step forward or back.
+     * Changes the weights in some way such that the genome
+     * will value some or maybe all of the chromosomes
+     * differently. Mutating should reset the fitness.
      */
-    public void maybeMutate() {
-        if(rand.nextFloat() < mutateRate) {
-            for (int i = 0; i < weights.length; i++) {
-                fitness = Integer.MIN_VALUE;
-                if (rand.nextBoolean()) {
-                    weights[i] += mutateStep;
-                } else {
-                    weights[i] -= mutateStep;
-                }
-            }
-        }
-    }
+    public abstract void mutate();
 
     /**
-     * Creates a new genome, the genome will randomly receive
-     * chromosome weights from this genome or the partner genome.
-     * @param partner genome that child may receive weights from
-     * @return
+     * Breeds a new genome from this genome and the partner.
+     * @param partner the partner genome
+     * @return the child genome
      */
-    public AbstractGenome crossover(AbstractGenome partner) {
-        try {
-            Constructor con = partner.getClass().getDeclaredConstructor(float.class, float.class, long.class);
-            con.setAccessible(true);
-            AbstractGenome child = (AbstractGenome) con.newInstance(mutateRate, mutateStep, rand.nextLong());
-            for(int i = 0; i < weights.length; i++) {
-                if(rand.nextBoolean()) {
-                    child.weights[i] = partner.weights[i];
-                }
-                else {
-                    child.weights[i] = this.weights[i];
-                }
-            }
-            return child;
-        } catch (Exception e) {}
-        return null;
-    }
+    public abstract AbstractGenome crossover(AbstractGenome partner);
 
     private ArrayList<Method> getChromosomes() {
         Method[] methods = this.getClass().getDeclaredMethods();
@@ -149,7 +115,6 @@ public abstract class AbstractGenome<T>  {
         }
         return boards;
     }
-
 
     /**
      * Returns the string representation of the weights. The

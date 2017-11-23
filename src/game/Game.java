@@ -1,6 +1,6 @@
 package game;
 
-import ai.AbstractGenome;
+import genomes.AbstractGenome;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,8 +8,8 @@ import java.util.Random;
 public class Game implements Runnable{
     private Board board;
     private Random rand;
-    private final int width;
-    private final int height;
+    private final int width = 10;
+    private final int height = 23;
     private ArrayList<Shape> shapes;
     private int score;
     public AbstractGenome genome;
@@ -17,14 +17,10 @@ public class Game implements Runnable{
     /**
      *
      * @param genome the genome to play the game with
-     * @param width the width of the board
-     * @param height the height of the board
      * @param seed the seed used to spawn shapes
      */
-    public Game(AbstractGenome genome, int width, int height, long seed){
+    public Game(AbstractGenome genome, long seed){
         this.rand = new Random(seed);
-        this.height  = height;
-        this.width = width;
         this.genome = genome;
         this.shapes = new ArrayList<>();
         this.board = new Board(height, width);
@@ -140,9 +136,6 @@ public class Game implements Runnable{
      */
     @Override
     public void run() {
-        if(genome.fitness > 0) {
-            return;
-        }
         score = 0;
         while(!board.isGameOver()) {
             step();

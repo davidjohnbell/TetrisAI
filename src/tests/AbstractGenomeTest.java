@@ -1,7 +1,7 @@
 package tests;
 
-import ai.AbstractGenome;
-import ai.GenomeOne;
+import genomes.AbstractGenome;
+import genomes.GenomeOne;
 import game.Board;
 import game.Shape;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +18,7 @@ class AbstractGenomeTest {
 
     @BeforeEach
     void setUp() {
-        genome = new GenomeOne(0.2f, 0.2f, 0);
+        genome = new GenomeOne(0);
         base = new Matrix(
             new int[][] {
                 {0,0,0,0},
