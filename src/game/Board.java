@@ -1,6 +1,5 @@
 package game;
 
-import utils.Matrix;
 import java.util.Arrays;
 
 public class Board extends Matrix {

@@ -1,7 +1,5 @@
 package game;
 
-import utils.Matrix;
-
 public class Shape {
     private Matrix[] rotations;
     private int rotationIndex;

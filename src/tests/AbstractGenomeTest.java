@@ -7,7 +7,7 @@ import game.Shape;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.Matrix;
+import game.Matrix;
 
 
 class AbstractGenomeTest {

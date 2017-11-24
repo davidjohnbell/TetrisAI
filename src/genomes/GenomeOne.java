@@ -159,4 +159,12 @@ public class GenomeOne extends AbstractGenome {
             }
         }
     }
+
+    @Override
+    public AbstractGenome makeCopy() {
+        GenomeOne copy = new GenomeOne(rand.nextLong());
+        copy.weights = Arrays.copyOf(weights, weights.length);
+        copy.fitness = fitness;
+        return copy;
+    }
 }

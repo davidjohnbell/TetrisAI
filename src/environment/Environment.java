@@ -76,4 +76,14 @@ public class Environment {
         }
         catch (Exception e) {System.out.println("InterruptedException occurred.");}
     }
+
+    public AbstractGenome getAlpha(Set<AbstractGenome> genomes) {
+        AbstractGenome alpha = null;
+        for(AbstractGenome genome : genomes) {
+            if(alpha == null || alpha.fitness < genome.fitness) {
+                alpha = genome;
+            }
+        }
+        return alpha;
+    }
 }

@@ -1,10 +1,9 @@
-package utils;
+package game;
 
 import java.util.Arrays;
 
 public class Matrix {
     private int[][] data;
-
 
     /**
      * Initialize a new matrix with zeroes.

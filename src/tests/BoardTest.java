@@ -3,7 +3,7 @@ package tests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import game.Shape;
-import utils.Matrix;
+import game.Matrix;
 import game.Board;
 
 class BoardTest {

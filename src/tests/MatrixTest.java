@@ -3,7 +3,7 @@ package tests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import utils.Matrix;
+import game.Matrix;
 
 class MatrixTest {
     Matrix m1 = new Matrix(

@@ -3,7 +3,6 @@ package genomes;
 import game.Board;
 import game.Shape;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,6 +42,8 @@ public abstract class AbstractGenome {
      * @return the child genome
      */
     public abstract AbstractGenome crossover(AbstractGenome partner);
+
+    public abstract AbstractGenome makeCopy();
 
     private ArrayList<Method> getChromosomes() {
         Method[] methods = this.getClass().getDeclaredMethods();
