@@ -38,7 +38,6 @@ public class StochasticSamplingManager implements IPopulationManager {
     @Override
     public void crossOver(Set<AbstractGenome> genomes) {
         ArrayList<AbstractGenome> chosen = SUS(genomes, numCrossOver);
-        ListIterator<AbstractGenome> iterator = chosen.listIterator();
         for(int i = 0, l = chosen.size() - 1; i < l; i++) {
             genomes.add(chosen.get(i).crossover(chosen.get(i+1)));
         }
@@ -89,6 +88,7 @@ public class StochasticSamplingManager implements IPopulationManager {
                 sum += sorted[i].fitness;
                 i++;
             }
+            i = i < sorted.length ? i : sorted.length - 1;
             chosen.add(sorted[i].makeCopy());
         }
         return chosen;

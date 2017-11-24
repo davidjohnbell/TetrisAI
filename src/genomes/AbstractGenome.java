@@ -129,6 +129,8 @@ public abstract class AbstractGenome {
         for(int i = 0; i < weights.length; i++) {
             builder.append(String.format("%s, ", weights[i]));
         }
+        builder.append("fitness: ");
+        builder.append(fitness);
         return builder.toString();
     }
 }

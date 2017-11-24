@@ -58,6 +58,7 @@ public class Environment {
     public void stepGeneration(Set<AbstractGenome> genomes, int n) {
         for(int i = 0; i < n; i++) {
             simulate(genomes);
+            System.out.println(getAlpha(genomes).toString());
             manager.select(genomes);
             manager.mutate(genomes);
             manager.crossOver(genomes);

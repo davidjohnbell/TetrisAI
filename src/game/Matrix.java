@@ -35,6 +35,7 @@ public class Matrix {
         int width = matrix.getWidth();
         int height = matrix.getHeight();
         this.data = new int[height][width];
+        int[][] data = matrix.data;
         for(int i = 0; i < height; i++) {
             this.data[i] = Arrays.copyOf(data[i], width);
         }

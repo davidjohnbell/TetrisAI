@@ -139,6 +139,7 @@ public class Game implements Runnable{
         score = 0;
         while(!board.isGameOver()) {
             step();
+            //score++;
         }
         genome.fitness = score;
     }

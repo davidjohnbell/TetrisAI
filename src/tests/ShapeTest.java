@@ -21,4 +21,14 @@ class ShapeTest {
         Matrix current = shape.getCurrent();
         Assertions.assertTrue(current.equals(left));
     }
+
+    @Test
+    void getCurrent() {
+        Matrix that = new Matrix( new int[][] {
+                {1,1,0},
+                {0,1,1},
+                {0,0,0}});
+        Matrix current = shape.getCurrent();
+        Assertions.assertTrue(current.equals(that));
+    }
 }

@@ -12,6 +12,13 @@ class MatrixTest {
             {4,5,6},
             {7,8,9}});
 
+
+    @Test
+    void copyConstructor() {
+        Matrix m2 = new Matrix(m1);
+        Assertions.assertTrue(m1.equals(m2));
+    }
+
     @Test
     void transpose() {
         Matrix m2 = new Matrix(
