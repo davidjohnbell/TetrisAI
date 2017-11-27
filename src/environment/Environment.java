@@ -5,6 +5,7 @@ import game.Game;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class Environment {
     private Random rand;
@@ -18,32 +19,22 @@ public class Environment {
     }
 
     private void simulate(Set<AbstractGenome> genomes) {
-        Future[] futures = new Future[genomes.size()];
-        Game[] games = makeGames(genomes);
-        int i = 0;
-        for(Game game : games) {
-            futures[i] = executor.submit(game);
-            i++;
-        }
-        for(Future future : futures) {
-            try {
-                future.get();
-            }
-            catch (Exception e) {
-                System.out.println("InterruptException occurred");
-            }
-        }
+        List<Game> games = makeGames(genomes);
+        games.stream()
+            .map(game -> executor.submit(game))
+            .forEach(f -> {
+                try {
+                    f.get();
+                }
+                catch(Exception e){}
+            });
     }
 
-    private Game[] makeGames(Set<AbstractGenome> genomes) {
-        Game[] games = new Game[genomes.size()];
+    private List<Game> makeGames(Set<AbstractGenome> genomes) {
         long seed = rand.nextLong();
-        int i = 0;
-        for(AbstractGenome genome : genomes) {
-            games[i] = new Game(genome, seed);
-            i++;
-        }
-        return games;
+        return genomes.stream()
+            .map(genome -> new Game(genome, seed))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -79,12 +70,8 @@ public class Environment {
     }
 
     public AbstractGenome getAlpha(Set<AbstractGenome> genomes) {
-        AbstractGenome alpha = null;
-        for(AbstractGenome genome : genomes) {
-            if(alpha == null || alpha.fitness < genome.fitness) {
-                alpha = genome;
-            }
-        }
-        return alpha;
+        return genomes.stream()
+            .max(Comparator.comparingInt(genome -> genome.fitness))
+            .get();
     }
 }
