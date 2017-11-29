@@ -1,5 +1,6 @@
 # TetrisAI
 QUESTION: How do you solve a problem that you can't brute force?
+
 ANSWER: Teach the computer to develop a "good enough" solution over many attempts. 
 
 A Genetic Algorithm (GA) is a hueristic inspired by natural selection. Darwin theorized that individuals compete for limited resources and the most adept individuals are most likely to pass on their genes. Over many generations the characteristics that make an individual particularely adept get strenghtened and become more common throughout the population. However, every once in awhile a mutation occurs and a new, more remarkable, individual emerges.
