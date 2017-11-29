@@ -1,4 +1,4 @@
-package tests;
+package tests.tetris;
 
 import genomes.AbstractGenome;
 import genomes.GenomeOne;

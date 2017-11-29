@@ -1,4 +1,4 @@
-package tests;
+package tests.tetris;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

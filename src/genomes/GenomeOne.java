@@ -5,7 +5,7 @@ import game.Board;
 import java.util.Arrays;
 
 public class GenomeOne extends AbstractGenome {
-    private final float mutationStep = 0.5f;
+    private final float mutationStep = 0.35f;
 
     /**
      * Creates a new genome.
