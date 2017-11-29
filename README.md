@@ -8,8 +8,11 @@ Inspired by a YouTube video I saw from creator Siraj Rivaal I set out to make a 
 
 ## Concepts
 Population - the set of genomes
+
 Selection - the process of picking which individuals make it to the next generation
+
 Cross Over - the process of taking two genomes, mom and dad, and constructing a new child genome
+
 Mutation - the encoding of the genome changes in some way
 
 ## Structure
