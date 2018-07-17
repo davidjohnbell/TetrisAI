@@ -49,14 +49,28 @@ public class GenomeOneTest {
 
     @Test
     public void Stochastic() {
-        //Local Variables
-        int mutations = 50, crossovers = 50;
-
         //Environment
         reporter = null;
-        manager = new StochasticSamplingManager(populationSize, mutations, crossovers);
+        manager = new StochasticSamplingManager(populationSize);
         env = new Environment(threads, seed, manager, reporter);
 
+
+        //Run
+        env.stepGeneration(genomes, generations);
+        AbstractGenome alpha = env.getAlpha(genomes);
+        System.out.println(alpha.toString());
+    }
+
+    @Test
+    public void Loaded() {
+        //Environment
+        reporter = null;
+        manager = new StochasticSamplingManager(populationSize);
+        env = new Environment(threads, seed, manager, reporter);
+
+        AbstractGenome genome = new GenomeOne(seed);
+        genome.loadWeights(new float[] {0.23f, 3.43f, -2.03f, 0.64f, 1.2f});
+        genomes.add(genome);
         //Run
         env.stepGeneration(genomes, generations);
         AbstractGenome alpha = env.getAlpha(genomes);

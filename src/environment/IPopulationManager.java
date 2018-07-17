@@ -5,7 +5,6 @@ import genomes.AbstractGenome;
 import java.util.Set;
 
 public interface IPopulationManager {
-
     /**
      * Decides which individuals to mutate.
      * How the individual is mutated is up to
