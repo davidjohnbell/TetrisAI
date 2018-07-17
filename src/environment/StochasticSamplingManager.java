@@ -61,7 +61,6 @@ public class StochasticSamplingManager implements IPopulationManager {
         genomes.add(alpha);
         genomes.addAll(chosen);
     }
-
     /**
      * Stochastic Universal Sampling works like a roulette wheel
      * with multiple pointers. Each genome has a proportionate
