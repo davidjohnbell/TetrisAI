@@ -29,6 +29,14 @@ public abstract class AbstractGenome {
         }
     }
 
+    public void loadWeights(float[] weights) {
+        if(weights.length == this.weights.length) {
+            this.weights = weights;
+        }
+        else {
+            System.out.println("Input array isn't compatible");
+        }
+    }
     /**
      * Changes the weights in some way such that the genome
      * will value some or maybe all of the chromosomes
